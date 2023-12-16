@@ -6,7 +6,7 @@ Here is a list of awesome contributors to Enimar, organized by their role:
 
 - [Enatenesh Yisema](https://github.com/johndoe) - Frontend Developer
 - [Jane Smith](https://github.com/janesmith) - Frontend Developer
-- [Alex Johnson](https://github.com/alexjohnson) - Frontend Developer
+- [BEREKET GEBEYAW](https://github.com/Bereketgebeyaw) - Frontend Developer
 
 ## Backend Developers:
 
