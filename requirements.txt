@@ -9,6 +9,7 @@ jedi==0.19.1
 matplotlib-inline==0.1.6
 parso==0.8.3
 prompt-toolkit==3.0.43
+psycopg2-binary==2.9.9
 pure-eval==0.2.2
 Pygments==2.17.2
 six==1.16.0
