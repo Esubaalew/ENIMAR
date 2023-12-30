@@ -2,35 +2,34 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser, Student
+from .models import CustomUser, Student, Teacher
 
 
 class TeacherRegistrationForm(UserCreationForm):
     class Meta:
-        model = CustomUser
+        model = Teacher
         fields = (
-            'first_name', 'second_name', 'username', 'email', 'password1', 'password2', 'phone_number', 'bio',
-            'position',
-            'address')
+            'first_name', 'last_name', 'username', 'email', 'password1', 'password2', 'phone_number',
+        )
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_teacher = True
+        if commit:
+            user.save()
+        return user
 
 
 class StudentRegistrationForm(UserCreationForm):
     class Meta:
-        model = CustomUser
+        model = Student
         fields = (
-            'first_name', 'second_name', 'username', 'email', 'password1', 'password2', 'phone_number'
+            'first_name', 'last_name', 'username', 'email', 'password1', 'password2',
         )
 
     def save(self, commit=True):
-        user = super(StudentRegistrationForm, self).save(commit=False)
-
-        # Set user as a student
+        user = super().save(commit=False)
         user.is_student = True
         if commit:
             user.save()
-
-            # Create a Student instance associated with the user
-            student = Student(user=user)
-            student.save()
-
         return user

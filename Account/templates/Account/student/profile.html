@@ -3,4 +3,19 @@
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock %}
-{% block title %}Student Profile{% endblock %}
+
+{% if user.is_authenticated  %}
+    
+       {% block title %}
+        {% if user.is_student %} 
+            {{ user.username }} - Student 
+        {% elif user.is_teacher %}
+            {{ user.username }} - Teacher
+        {% endif %} 
+    {% endblock %}
+        
+
+{% block body %}
+    <h2>Hello, {{ user.first_name }}!</h2>
+{% endblock %}
+{% endif %}

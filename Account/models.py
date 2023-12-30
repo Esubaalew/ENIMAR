@@ -17,24 +17,32 @@ class Address(models.Model):
 
 class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=30)
-    second_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     bio = models.TextField(blank=True)
     position = models.CharField(max_length=50, blank=True)
     address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
+    is_student = models.BooleanField(default=False)
+    is_teacher = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    is_student = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "All User"
 
     def __str__(self):
         return self.username
 
 
-class Student(models.Model):
-    user = models.OneToOneField(
-        CustomUser,
-        on_delete=models.CASCADE,
-        primary_key=True)
+class Student(CustomUser):
+    courses = models.IntegerField(default=0)
 
-    def __str__(self):
-        return self.user.username
+    class Meta:
+        verbose_name = "Student"
+
+
+class Teacher(CustomUser):
+    courses_created = models.IntegerField(default=0, verbose_name='Courses Created')
+
+    class Meta:
+        verbose_name = "Teacher"
