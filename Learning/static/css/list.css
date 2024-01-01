@@ -1,0 +1,50 @@
+
+.course-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.course-card {
+    max-width: 300px;
+    margin: 15px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.course-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.course-card .description {
+    margin-bottom: 10px;
+}
+
+.course-card .teacher {
+    font-style: italic;
+    margin-bottom: 8px;
+}
+
+.course-card .students,
+.course-card .price {
+    margin-bottom: 8px;
+}
+
+.course-card .details-link {
+    display: block;
+    padding: 8px;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.course-card .details-link:hover {
+    background-color: #0056b3;
+}

@@ -1,6 +1,5 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from .forms import StudentRegistrationForm, TeacherRegistrationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
@@ -18,6 +17,14 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         return '/account/student/profile/'
+
+
+class CustomLogoutView(LogoutView):
+    def get(self, request, *args, **kwargs):
+
+        response = super().get(request, *args, **kwargs)
+
+        return render(request, 'Account/student/login.html')
 
 
 @login_required

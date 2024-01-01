@@ -7,6 +7,7 @@ from .models import CustomUser, Student, Address, Teacher
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
     list_display = ('street', 'city', 'state', 'country')
+    list_filter = ('street', 'city', 'country', 'state')
 
 
 @admin.register(CustomUser)

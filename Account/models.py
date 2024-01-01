@@ -8,6 +8,9 @@ class Address(models.Model):
     state = models.CharField(max_length=30, blank=True)
     country = models.CharField(max_length=10)
 
+    class Meta:
+        verbose_name = "Address"
+        verbose_name_plural = "Addresses"
     def __str__(self):
         parts = [self.street, self.city, self.state, self.country]
 
@@ -35,14 +38,12 @@ class CustomUser(AbstractUser):
 
 
 class Student(CustomUser):
-    courses = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = "Student"
 
 
 class Teacher(CustomUser):
-    courses_created = models.IntegerField(default=0, verbose_name='Courses Created')
 
     class Meta:
         verbose_name = "Teacher"

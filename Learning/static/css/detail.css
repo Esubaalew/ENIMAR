@@ -1,0 +1,43 @@
+
+.course-detail-card {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.course-detail-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.course-detail-card .description {
+    margin-bottom: 15px;
+}
+
+.course-detail-card .teacher {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.course-detail-card .students,
+.course-detail-card .price {
+    margin-bottom: 10px;
+}
+
+.course-detail-card .enroll-button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.course-detail-card .enroll-button:hover {
+    background-color: #0056b3;
+}

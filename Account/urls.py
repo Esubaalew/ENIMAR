@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import CustomLoginView
+from .views import CustomLoginView, CustomLogoutView
 
 app_name = 'account'
 
@@ -14,5 +14,6 @@ urlpatterns = [path(
         views.teacher_registration,
         name='teacher_registration'),
     path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('student/profile/', views.profile, name='profile')
 ]

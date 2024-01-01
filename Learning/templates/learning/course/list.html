@@ -1,0 +1,27 @@
+{% extends 'Learning/base.html' %}
+{% load static %}
+
+{% block title %}
+    Courses List
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/list.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="course-list">
+        {% for course in courses %}
+            <div class="course-card">
+                <h2><a href="{% url 'learning:course_detail' pk=course.pk %}">{{ course.title }}</a></h2>
+                <img src="{{ course.poster.url }}" alt="{{ course.title }} Poster">
+                <p class="description">{{ course.description }}</p>
+                <p class="teacher">Teacher: {{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
+                <p class="students">Number of Students: {{ course.students.count }}</p>
+                <p class="price">Price: {{ course.price }} ETB</p>
+                <a href="{% url 'learning:course_detail' pk=course.pk %}" class="details-link">View Details</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
