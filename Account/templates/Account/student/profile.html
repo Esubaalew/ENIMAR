@@ -17,5 +17,6 @@
 
 {% block body %}
     <h2>Hello, {{ user.first_name }}!</h2>
+    <a href="{% url 'account:logout' %}">logout</a>
 {% endblock %}
 {% endif %}

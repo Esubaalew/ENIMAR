@@ -1,9 +1,17 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from .forms import StudentRegistrationForm, TeacherRegistrationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from .models import CustomUser
+from django.views.decorators.http import require_GET
+from django.utils.decorators import method_decorator
+
+
+def home(request):
+    return render(request, 'home.html')
 
 
 class CustomLoginView(LoginView):
@@ -16,20 +24,18 @@ class CustomLoginView(LoginView):
         return context
 
     def get_success_url(self):
-        return '/account/student/profile/'
+        return '/account/profile/'
 
 
-class CustomLogoutView(LogoutView):
-    def get(self, request, *args, **kwargs):
-
-        response = super().get(request, *args, **kwargs)
-
-        return render(request, 'Account/student/login.html')
+@login_required
+def logout_(request):
+    logout(request)
+    return redirect('home')
 
 
 @login_required
 def profile(request):
-    return render(request, 'Account/student/profile.html')
+    return render(request, 'Account/student/profile.html',)
 
 
 def student_registration(request):

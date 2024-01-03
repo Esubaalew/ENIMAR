@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from Account import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,7 +29,7 @@ urlpatterns = [
         'learning/',
         include('Learning.urls',
                 namespace='learning'))
-
+    , path("home/", views.home, name='home')
 ]
 
 if settings.DEBUG:

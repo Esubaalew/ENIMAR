@@ -11,6 +11,7 @@ class Address(models.Model):
     class Meta:
         verbose_name = "Address"
         verbose_name_plural = "Addresses"
+
     def __str__(self):
         parts = [self.street, self.city, self.state, self.country]
 
@@ -38,12 +39,10 @@ class CustomUser(AbstractUser):
 
 
 class Student(CustomUser):
-
     class Meta:
         verbose_name = "Student"
 
 
 class Teacher(CustomUser):
-
     class Meta:
         verbose_name = "Teacher"

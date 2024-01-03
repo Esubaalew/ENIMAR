@@ -22,4 +22,4 @@ class Course(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('course-detail', kwargs={'pk': self.pk})
+        return reverse('learning:course_detail', args=[str(self.pk)])
