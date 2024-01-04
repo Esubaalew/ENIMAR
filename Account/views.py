@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import StudentRegistrationForm, TeacherRegistrationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
-from .models import CustomUser
+from .models import CustomUser,Teacher,Student
 from django.views.decorators.http import require_GET
 from django.utils.decorators import method_decorator
 
@@ -36,7 +36,6 @@ def logout_(request):
 @login_required
 def profile(request):
     return render(request, 'Account/student/profile.html',)
-
 
 def student_registration(request):
     if request.method == 'POST':
