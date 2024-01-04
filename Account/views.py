@@ -48,7 +48,6 @@ def profile(request, username):
 
     return render(request, 'Account/student/profile.html', context=context)
 
-
 def student_registration(request):
     if request.method == 'POST':
         form = StudentRegistrationForm(request.POST)
