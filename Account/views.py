@@ -25,7 +25,7 @@ class CustomLoginView(LoginView):
         return context
 
     def get_success_url(self):
-        return '/account/profile/'
+        return '/home'
 
 
 @login_required

@@ -1,4 +1,4 @@
-/* General Styles */
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -68,7 +68,7 @@ ul {
 }
 
 li {
-    margin-bottom: 20px; /* Increased margin for better separation */
+    margin-bottom: 20px;
 }
 
 /* Course Card Styles */
@@ -81,7 +81,7 @@ li {
 
 .course-card a {
     text-decoration: none;
-    color: #333; /* You can choose your preferred color */
+    color: #333;
 }
 
 .course-card h3 {
@@ -89,7 +89,7 @@ li {
 }
 
 .course-card p.description {
-    color: #555; /* You can choose your preferred color */
+    color: #555;
 }
 
 .course-card p.teacher {
@@ -97,4 +97,4 @@ li {
     color: #777; /* You can choose your preferred color */
 }
 
-/* Add more specific styles as needed for other elements */
+
