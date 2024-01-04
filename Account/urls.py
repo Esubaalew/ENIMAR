@@ -15,5 +15,6 @@ urlpatterns = [path(
         name='teacher_registration'),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', views.logout_, name='logout'),
-    path('profile/', views.profile, name='profile'),
+    path('<str:username>/', views.profile, name='profile'),
+
 ]
