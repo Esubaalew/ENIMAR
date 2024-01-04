@@ -1,17 +1,18 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-
 from .forms import StudentRegistrationForm, TeacherRegistrationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
-from .models import CustomUser
-from django.views.decorators.http import require_GET
-from django.utils.decorators import method_decorator
+from .models import CustomUser, Teacher, Student
+from Learning.models import Course
 
 
 def home(request):
-    return render(request, 'home.html')
+    courses = Course.objects.all()
+    teachers = Teacher.objects.all()
+    students = Student.objects.all()
+
+    return render(request, 'home.html', {'courses': courses, 'teachers': teachers, 'students': students})
 
 
 class CustomLoginView(LoginView):
@@ -34,8 +35,18 @@ def logout_(request):
 
 
 @login_required
-def profile(request):
-    return render(request, 'Account/student/profile.html',)
+def profile(request, username):
+    student = None
+    teacher = None
+    user = CustomUser.objects.get(username=username)
+    if user.is_student:
+        student = Student.objects.get(username=username)
+    elif user.is_teacher:
+        teacher = Teacher.objects.get(username=username)
+
+    context = {'user': user, 'student': student, 'teacher': teacher}
+
+    return render(request, 'Account/student/profile.html', context=context)
 
 
 def student_registration(request):

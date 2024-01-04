@@ -1,0 +1,100 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+/* User Icon Styles */
+.user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #2ecc71; /* You can choose your preferred color */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.content-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Card Styles */
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Courses Card Styles */
+.courses-card {
+    border: 1px solid #3498db;
+}
+
+/* Teachers Card Styles */
+.teachers-card {
+    border: 1px solid #2ecc71;
+}
+
+/* Students Card Styles */
+.students-card {
+    border: 1px solid #e74c3c;
+}
+
+/* List Styles */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 20px; /* Increased margin for better separation */
+}
+
+/* Course Card Styles */
+.course-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.course-card a {
+    text-decoration: none;
+    color: #333; /* You can choose your preferred color */
+}
+
+.course-card h3 {
+    margin-bottom: 10px;
+}
+
+.course-card p.description {
+    color: #555; /* You can choose your preferred color */
+}
+
+.course-card p.teacher {
+    margin-top: 10px;
+    color: #777; /* You can choose your preferred color */
+}
+
+/* Add more specific styles as needed for other elements */

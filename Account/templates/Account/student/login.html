@@ -3,12 +3,15 @@
 {% block title %} Login {% endblock %}
 {% block css %} 
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
+     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 {% endblock %}
 {% block body %}
-  <h2>Login</h2>
   <form method="post" action="{% url 'account:login' %}">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
+    <div class="card">
+      <h2>Login</h2>
+      {{ form.as_p }}
+      <button type="submit">Login</button>
+    </div>
   </form>
 {% endblock %}

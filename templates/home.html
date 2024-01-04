@@ -2,9 +2,80 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Universal Home</title>
+    <title>Home Feed</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 <body>
+    <header>
+        <!-- Use the initials of the first and last names as the user icon -->
+        <div class="user-info">
+            <div class="user-icon">{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
+            <span>{{ user.full_name }}</span>
+        </div>
+    </header>
 
+    <div class="content-container">
+        <section class="card courses-card">
+            <h2>Courses You May Like</h2>
+            {% if courses %}
+                <ul>
+                    {% for course in courses %}
+                        <li>
+                            <div class="course-card">
+                                <a href="{% url 'learning:course_detail' course.pk %}">
+                                    <h3>{{ course.title }}</h3>
+                                </a>
+                                <p class="description">{{ course.description|truncatechars:100 }}</p>
+                                <a href="{% url 'account:profile' username=course.teacher.username %}">
+                                    <p class="teacher">{{ course.teacher }}</p>
+                                </a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No courses available at the moment.</p>
+            {% endif %}
+        </section>
+
+        <section class="card teachers-card">
+            <h2>Teachers You May Know</h2>
+            {% if teachers %}
+                <ul>
+                    {% for teacher in teachers %}
+                        <li>
+                            <div class="user-icon">{{ teacher.first_name.0 }}{{ teacher.last_name.0 }}</div>
+                            <a href="{% url 'account:profile' username=teacher.username %}">
+                                {{ teacher.first_name }} {{ teacher.last_name }}
+                            </a>
+                            - {{ teacher.position }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No teachers available at the moment.</p>
+            {% endif %}
+        </section>
+
+        <section class="card students-card">
+            <h2>Students You May Know</h2>
+            {% if students %}
+                <ul>
+                    {% for student in students %}
+                        <li>
+                            <div class="user-icon">{{ student.first_name.0 }}{{ student.last_name.0 }}</div>
+                            <a href="{% url 'account:profile' username=student.username %}">
+                                {{ student.first_name }} {{ student.last_name }}
+                            </a>
+                            - {{ student.bio }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No students available at the moment.</p>
+            {% endif %}
+        </section>
+    </div>
 </body>
 </html>
