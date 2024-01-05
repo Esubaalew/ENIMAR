@@ -8,13 +8,15 @@
 </head>
 <body>
     <header>
-        <!-- Use the initials of the first and last names as the user icon -->
+
         <div class="user-info">
             <div class="user-icon">{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
             <span>{{ user.full_name }}</span>
         </div>
     </header>
-
+{% if user.is_teacher %}
+    {% include 'creator.html' with user=user %}
+{% endif %}
     <div class="content-container">
         <section class="card courses-card">
             <h2>Courses You May Like</h2>

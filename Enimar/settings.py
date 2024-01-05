@@ -33,13 +33,13 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'Account.apps.AccountConfig',
     'Learning.apps.LearningConfig',
+    'Social.apps.SocialConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "social.apps.SocialConfig"
 
 ]
 

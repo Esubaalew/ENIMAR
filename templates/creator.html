@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/creator.css" %}">
+    <title>Teacher Posting Options</title>
+</head>
+<body>
+
+    <div class="post-container">
+        <div class="profile-icon">
+            <div class="user-icon">{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
+        </div>
+        <div class="post-content">
+            <div class="post-input">
+                <label>
+                    <textarea placeholder="Say something..." rows="1"></textarea>
+                </label>
+            </div>
+            <div class="separator"></div>
+            <div class="post-links">
+                <a href="#" class="post-link">Go Live</a>
+                <a href="#" class="post-link">Upload Video/Photo</a>
+                <a href="{% url "learning:create_course" %}" class="post-link">Create Course</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
