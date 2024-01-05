@@ -4,7 +4,8 @@ from .models import Post, Video, Comment, Photo
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author',)
+    list_display = ('title', 'slug', 'author',)
+    prepopulated_fields = {'slug': ('title',)}
 
 
 @admin.register(Comment)
