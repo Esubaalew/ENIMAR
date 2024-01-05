@@ -18,7 +18,7 @@ class Post(models.Model):
     course = models.OneToOneField(Course, on_delete=models.CASCADE, null=True, blank=True)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='posts')
     video = models.OneToOneField(Video, on_delete=models.CASCADE, null=True, blank=True)
-    photos = models.ManyToManyField(Photo, related_name='posts', blank=True, null=True)
+    photos = models.ManyToManyField(Photo, related_name='posts', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

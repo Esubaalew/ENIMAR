@@ -5,14 +5,23 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from .models import CustomUser, Teacher, Student
 from Learning.models import Course
+from Social.models import Post, Comment
 
 
 def home(request):
     courses = Course.objects.all()
     teachers = Teacher.objects.all()
     students = Student.objects.all()
+    posts = Post.objects.all()
 
-    return render(request, 'home.html', {'courses': courses, 'teachers': teachers, 'students': students})
+    context = {
+        'courses': courses,
+        'teachers': teachers,
+        'students': students,
+        'posts': posts,
+        }
+
+    return render(request, 'home.html',  context=context)
 
 
 class CustomLoginView(LoginView):

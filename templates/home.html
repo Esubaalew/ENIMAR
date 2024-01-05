@@ -8,15 +8,14 @@
 </head>
 <body>
     <header>
-
         <div class="user-info">
             <div class="user-icon">{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
             <span>{{ user.full_name }}</span>
         </div>
     </header>
-{% if user.is_teacher %}
-    {% include 'creator.html' with user=user %}
-{% endif %}
+    {% if user.is_teacher %}
+        {% include 'creator.html' with user=user %}
+    {% endif %}
     <div class="content-container">
         <section class="card courses-card">
             <h2>Courses You May Like</h2>
@@ -27,11 +26,9 @@
                             <div class="course-card">
                                 <a href="{% url 'learning:course_detail' course.pk %}">
                                     <h3>{{ course.title }}</h3>
-                                </a>
-                                <p class="description">{{ course.description|truncatechars:100 }}</p>
-                                <a href="{% url 'account:profile' username=course.teacher.username %}">
                                     <p class="teacher">{{ course.teacher }}</p>
                                 </a>
+                                <p class="description">{{ course.description|truncatechars:100 }}</p>
                             </div>
                         </li>
                     {% endfor %}
@@ -42,49 +39,75 @@
         </section>
 
         <section class="card teachers-card">
-    <h2>Teachers You May Know</h2>
-    {% if teachers %}
-        <ul>
-            {% for teacher in teachers %}
-                <li>
-                    <div class="user-icon">{{ teacher.first_name.0 }}{{ teacher.last_name.0 }}</div>
-                    <div class="user-info-details">
-                        <a href="{% url 'account:profile' username=teacher.username %}">
-                            <h3>{{ teacher.first_name }} {{ teacher.last_name }}</h3>
-                        </a>
-                        <p class="position">{{ teacher.position }}</p>
-                        <p class="address">{{ teacher.address }}</p>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No teachers available at the moment.</p>
-    {% endif %}
-</section>
-
+            <h2>Teachers You May Know</h2>
+            {% if teachers %}
+                <ul>
+                    {% for teacher in teachers %}
+                        <li>
+                            <div class="teacher-card">
+                                <div class="user-icon">{{ teacher.first_name.0 }}{{ teacher.last_name.0 }}</div>
+                                <div class="user-info-details">
+                                    <a href="{% url 'account:profile' username=teacher.username %}">
+                                        <h3>{{ teacher.first_name }} {{ teacher.last_name }}</h3>
+                                    </a>
+                                    <p class="position">{{ teacher.position }}</p>
+                                    <p class="address">{{ teacher.address }}</p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No teachers available at the moment.</p>
+            {% endif %}
+        </section>
 
         <section class="card students-card">
-    <h2>Students You May Know</h2>
-    {% if students %}
-        <ul>
-            {% for student in students %}
-                <li>
-                    <div class="user-icon">{{ student.first_name.0 }}{{ student.last_name.0 }}</div>
-                    <div class="user-info-details">
-                        <a href="{% url 'account:profile' username=student.username %}">
-                            <h3>{{ student.first_name }} {{ student.last_name }}</h3>
-                        </a>
-                        <p class="position">{{ student.position }}</p>
-                        <p class="address">{{ student.address }}</p>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No students available at the moment.</p>
-    {% endif %}
-</section>
+            <h2>Students You May Know</h2>
+            {% if students %}
+                <ul>
+                    {% for student in students %}
+                        <li>
+                            <div class="student-card">
+                                <div class="user-icon">{{ student.first_name.0 }}{{ student.last_name.0 }}</div>
+                                <div class="user-info-details">
+                                    <a href="{% url 'account:profile' username=student.username %}">
+                                        <h3>{{ student.first_name }} {{ student.last_name }}</h3>
+                                    </a>
+                                    <p class="position">{{ student.position }}</p>
+                                    <p class="address">{{ student.address }}</p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No students available at the moment.</p>
+            {% endif %}
+        </section>
+
+        <!-- Center Section -->
+        <section class="center-section">
+            <section class="card posts-card">
+                <h2>Latest Posts</h2>
+                {% if posts %}
+                    <ul>
+                        {% for post in posts %}
+                            <li>
+                                <div class="post-card">
+                                    <a href="{% url 'social:post_detail' post.pk %}">
+                                        <h3>{{ post.title }}</h3>
+                                    </a>
+                                    <p class="comment-count">{{ post.comments.count }} Comment{{ post.comments.count|pluralize }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No posts available at the moment.</p>
+                {% endif %}
+            </section>
+        </section>
     </div>
 </body>
 </html>

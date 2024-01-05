@@ -1,3 +1,9 @@
 from django.shortcuts import render
+from .models import Post, Comment
+from django.shortcuts import get_object_or_404
 
-# Create your views here.
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    return render(request, 'post/detail.html', {'post': post})
