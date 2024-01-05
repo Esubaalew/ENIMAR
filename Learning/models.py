@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import ManyToManyField
+
+
 from Account.models import Teacher, Student
 from django.urls import reverse
+from django.utils import timezone
 
 
 class Course(models.Model):
@@ -23,3 +25,5 @@ class Course(models.Model):
 
     def get_absolute_url(self):
         return reverse('learning:course_detail', args=[str(self.pk)])
+
+
