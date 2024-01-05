@@ -4,13 +4,11 @@ from Account.models import CustomUser
 
 
 class Photo(models.Model):
-    post = models.ForeignKey('Post', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='Social/photos/')
 
 
 class Video(models.Model):
-    post = models.OneToOneField('Post', on_delete=models.CASCADE)
-    video_file = models.FileField(upload_to='Social/videos/')
+    video_file = models.FileField(upload_to='Social/videos/', default=None)
 
 
 class Post(models.Model):
@@ -19,6 +17,8 @@ class Post(models.Model):
     text = models.TextField()
     course = models.OneToOneField(Course, on_delete=models.CASCADE, null=True, blank=True)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='posts')
+    video = models.OneToOneField(Video, on_delete=models.CASCADE)
+    photos = models.ManyToManyField(Photo, related_name='posts', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
