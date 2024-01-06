@@ -1,6 +1,9 @@
-
-<form method="post" enctype="multipart/form-data">
+{% if user.is_teacher %}
+    <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Create Course</button>
 </form>
+{% elif user.is_student %}
+    <h2>Student aren't allowed to  create course</h2>
+{% endif %}

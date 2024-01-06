@@ -12,8 +12,8 @@ class Course(models.Model):
     description = models.TextField()
     poster = models.ImageField(upload_to='Learning/course/posters/', help_text='An image representing the course')
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    teacher = models.ForeignKey(Teacher, on_delete=models.PROTECT)
-    students = models.ManyToManyField(Student, related_name='courses', blank=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.PROTECT, related_name='courses')
+    students = models.ManyToManyField(Student, related_name='enrolled_courses', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

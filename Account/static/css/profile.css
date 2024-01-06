@@ -1,0 +1,186 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: lavender;
+
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bit of shadow */
+    background-color: #fff;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+}
+.profile-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 20px;
+    background-color: #f0f0f0; /* Add a background color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-photo p {
+    margin: 0;
+    font-size: 24px; /* Adjust the font size as needed */
+    color: #333; /* Text color for initials */
+}
+
+.profile-info h1 {
+    margin: 10px 0 5px;
+    color: #1c1e21;
+}
+.action-button {
+    background-color: #1877f2;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.message-button {
+    background-color: #1877f2;
+    margin-left: 10px;
+}
+
+.position-location {
+    margin: 5px 0;
+    color: #606770;
+}
+
+.profile-bio {
+    margin-top: 20px;
+}
+
+.profile-bio p {
+    color: #606770;
+}
+
+.separator {
+    height: 1px;
+    background-color: #dddfe2;
+    margin: 20px 0;
+}
+
+.follower-following-section {
+    margin-top: 20px;
+}
+
+.followers-link,
+.following-link {
+    margin-right: 20px;
+    text-decoration: none;
+    color: #1877f2;
+    font-weight: bold;
+}
+
+/* ... For the course container and its friends... */
+
+.courses-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.courses-container .profile-header {
+    margin-bottom: 10px;
+}
+
+.course-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: inherit; /* Inherit color from the parent */
+}
+
+.course-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.course-details {
+    flex-grow: 1;
+}
+
+.course-card h2 {
+    color: #1c1e21;
+    margin-bottom: 5px;
+}
+
+.course-card p {
+    color: #606770;
+    margin-bottom: 10px;
+}
+
+.posted-date {
+    color: #606770;
+    margin-bottom: 5px;
+}
+
+.show-all-courses {
+    text-align: center;
+}
+
+.show-all-link {
+    color: #1877f2;
+    text-decoration: none;
+    font-weight: bold;
+}
+.second{
+    margin-bottom: 10px;
+}
+
+.action-button {
+    margin-right: 10px; /* Adjust the margin as needed */
+}
+
+/* Add these styles to your existing CSS */
+
+.profile-container {
+    text-align: center; /* Center the content */
+}
+
+.profile-photo {
+    display: inline-block; /* Align the photo and info side by side */
+}
+
+.profile-info {
+    display: inline-block;
+    text-align: left; /* Align text to the left in the info section */
+}
+
+.action-button {
+    margin-top: 10px; /* Add some space between buttons and text */
+}
+
+.profile-bio {
+    text-align: justify; /* Justify the bio text */
+}
+
+.follower-following-section {
+    text-align: center; /* Center the links */
+}
+
+.courses-container,
+.posts-container {
+    margin-top: 20px; /* Add space between containers */
+}

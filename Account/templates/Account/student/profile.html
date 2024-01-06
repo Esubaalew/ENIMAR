@@ -1,22 +1,80 @@
 {% extends 'Account/base.html' %}
-{% load static %}
+
+{% block title %}{{ user.first_name }} {{ user.last_name }} Profile{% endblock %}
+
+{% load  static %}
 {% block css %}
+    {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock %}
 
-{% if user.is_authenticated  %}
-    
-       {% block title %}
-        {% if user.is_student %} 
-            {{ user.username }} - Student 
-        {% elif user.is_teacher %}
-            {{ user.username }} - Teacher
-        {% endif %} 
-    {% endblock %}
-        
-
 {% block body %}
-    <h2>Hello, {{ user.first_name }}!</h2>
-    <a href="{% url 'account:logout' %}">logout</a>
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-photo">
+                <!-- Use the initials of the user for now -->
+                <p>{{ user.first_name.0 }}{{ user.last_name.0 }}</p>
+            </div>
+            <div class="profile-info">
+                <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+                <button class="action-button follow-button">Follow</button>
+                <button class="action-button message-button">Message</button>
+                <p class="position-location">{{ user.position }}, {{ user.address.city }}</p>
+            </div>
+        </div>
+
+        <div class="profile-bio">
+            <p>{{ user.bio }}</p>
+        </div>
+        
+        <div class="separator"></div>
+
+        <div class="follower-following-section">
+            <a href="#" class="followers-link">Posts</a>
+            <a href="#" class="following-link">Streams</a>
+            <a href="#" class="followers-link">Followers</a>
+            <a href="#" class="following-link">Following</a>
+        </div>
+    </div>
+
+    <!-- Now the other card is following -->
+    <div class="courses-container">
+        <div class="profile-header">
+            <button class="action-button follow-button">Courses</button>
+            <button class="action-button message-button">Streams</button>
+            <button class="action-button message-button">Posts</button>
+        </div>
+
+        <!-- Single Course Card -->
+        {% if user.is_teacher %}
+            {% for course in teacher.courses.all %}
+                <a href="{% url 'learning:course_detail' course.pk %}" class="course-card">
+                    <!-- Add appropriate course image if available -->
+                    <div class="course-details">
+                        <h2>{{ course.title }}</h2>
+                        <p>{{ course.description }}</p>
+                        <!-- Assuming there's a created date field in Course model -->
+                        <p class="posted-date">{{ course.created|date:"F j, Y" }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Add more course cards as needed -->
+        <div class="separator second"></div>
+        <div class="show-all-courses">
+            <a href="#" class="show-all-link">Show All Courses</a>
+        </div>
+        
+        <!-- Display all posts by the user -->
+        <div class="separator second"></div>
+        <h2>All Posts by {{ user.first_name }} {{ user.last_name }}</h2>
+        {% for post in user.posts.all %}
+            <div class="post-card">
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.text }}</p>
+                <!-- Add more details as needed -->
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
-{% endif %}

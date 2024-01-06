@@ -35,6 +35,7 @@ class CourseDetailView(DetailView):
 
 @login_required
 def create_course(request):
+    user = request.user
     if request.method == 'POST':
         form = CourseCreationForm(request.POST, request.FILES)
         if form.is_valid():
@@ -49,4 +50,4 @@ def create_course(request):
     else:
         form = CourseCreationForm()
 
-    return render(request, 'Learning/course/create.html', {'form': form, })
+    return render(request, 'Learning/course/create.html', {'form': form, 'user': user })
