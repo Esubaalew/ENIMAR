@@ -1,0 +1,48 @@
+/* comment.css */
+
+.comment-section {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+.comment {
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden; /* Ensures rounded corners are applied correctly */
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment .user-info {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.comment .user-icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-color: #ddd;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    margin-right: 10px;
+}
+
+.comment .full-name {
+    font-weight: bold;
+    margin: 0;
+}
+
+.comment .comment-date {
+    color: #777;
+    font-size: 12px;
+    margin-left: auto; /* Push the comment date to the right */
+}
+
+.comment p {
+    margin: 0;
+    padding: 10px; /* Add padding to the comment text */
+}

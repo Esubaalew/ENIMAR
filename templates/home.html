@@ -1,3 +1,4 @@
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,109 +6,135 @@
     <title>Home Feed</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
+ <link rel="stylesheet" href="{% static 'css/comment.css' %}">
 </head>
-<body>
-    <header>
+  <header>
         <div class="user-info">
             <div class="user-icon">{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
             <span>{{ user.full_name }}</span>
         </div>
     </header>
-    {% if user.is_teacher %}
-        {% include 'creator.html' with user=user %}
-    {% endif %}
-    <div class="content-container">
-        <section class="card courses-card">
-            <h2>Courses You May Like</h2>
-            {% if courses %}
-                <ul>
-                    {% for course in courses %}
+<body>
+  <div class="content-container">
+    <section class="center-section">
+        <section class="card posts-card">
+            <h2>Latest Posts</h2>
+            {% if posts %}
+                <ul class="post-list">
+                    {% for post in posts %}
                         <li>
-                            <div class="course-card">
-                                <a href="{% url 'learning:course_detail' course.pk %}">
-                                    <h3>{{ course.title }}</h3>
-                                    <p class="teacher">{{ course.teacher }}</p>
+                            <div class="card post-card" data-post-id="{{ post.pk }}">
+                                <a href="{% url 'social:post_detail' post.pk %}">
+                                    <div class="user-info-details">
+                                        <div class="user-icon">{{ post.author.first_name.0 }}{{ post.author.last_name.0 }}</div>
+                                        <a href="{% url 'account:profile' username=post.author.username %}">
+                                            <h3 class="full-name">{{ post.author.first_name }} {{ post.author.last_name }}</h3>
+                                        </a>
+                                        <p class="post-date">{{ post.created|naturaltime }}</p>
+                                    </div>
                                 </a>
-                                <p class="description">{{ course.description|truncatechars:100 }}</p>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No courses available at the moment.</p>
-            {% endif %}
-        </section>
-
-        <section class="card teachers-card">
-            <h2>Teachers You May Know</h2>
-            {% if teachers %}
-                <ul>
-                    {% for teacher in teachers %}
-                        <li>
-                            <div class="teacher-card">
-                                <div class="user-icon">{{ teacher.first_name.0 }}{{ teacher.last_name.0 }}</div>
-                                <div class="user-info-details">
-                                    <a href="{% url 'account:profile' username=teacher.username %}">
-                                        <h3>{{ teacher.first_name }} {{ teacher.last_name }}</h3>
+                                <div class="post-content">
+                                    <p>{{ post.text|truncatechars:200 }}{% if post.text|length > 200 %} <a href="{% url 'social:post_detail' post.pk %}">Read More</a>{% endif %}</p>
+                                </div>
+                                <p class="comment-count">
+                                    <a href="#" class="expand-comments" data-post-id="{{ post.pk }}" onclick="toggleCommentSection({{ post.pk }}, event)">
+                                        {{ post.comments.count }} Comment{{ post.comments.count|pluralize }}
                                     </a>
-                                    <p class="position">{{ teacher.position }}</p>
-                                    <p class="address">{{ teacher.address }}</p>
+                                </p>
+                                <div class="comment-section" id="comment-section-{{ post.pk }}">
+                                    <!-- Comments will be dynamically added here using JavaScript -->
+                                    {% for comment in post.comments.all %}
+                                        <div class="comment">
+                                            <div class="user-info">
+                                                <div class="user-icon">{{ comment.user.first_name.0 }}{{ comment.user.last_name.0 }}</div>
+                                                <p class="full-name">{{ comment.user.first_name }} {{ comment.user.last_name }}</p>
+                                            </div>
+                                            <p>{{ comment.text }}</p>
+                                            <p class="comment-date">{{ comment.created|naturaltime }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </li>
                     {% endfor %}
                 </ul>
             {% else %}
-                <p>No teachers available at the moment.</p>
+                <p>No posts available at the moment.</p>
             {% endif %}
         </section>
-
-        <section class="card students-card">
-            <h2>Students You May Know</h2>
-            {% if students %}
-                <ul>
-                    {% for student in students %}
-                        <li>
-                            <div class="student-card">
-                                <div class="user-icon">{{ student.first_name.0 }}{{ student.last_name.0 }}</div>
-                                <div class="user-info-details">
-                                    <a href="{% url 'account:profile' username=student.username %}">
-                                        <h3>{{ student.first_name }} {{ student.last_name }}</h3>
-                                    </a>
-                                    <p class="position">{{ student.position }}</p>
-                                    <p class="address">{{ student.address }}</p>
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No students available at the moment.</p>
-            {% endif %}
-        </section>
-
-        <!-- Center Section -->
-        <section class="center-section">
-            <section class="card posts-card">
-                <h2>Latest Posts</h2>
-                {% if posts %}
+    </section>
+        <section class="side-section">
+            <section class="card courses-card">
+                <h2>Courses You May Like</h2>
+                {% if courses %}
                     <ul>
-                        {% for post in posts %}
+                        {% for course in courses %}
                             <li>
-                                <div class="post-card">
-                                    <a href="{% url 'social:post_detail' post.pk %}">
-                                        <h3>{{ post.title }}</h3>
+                                <div class="card course-card">
+                                    <a href="{% url 'learning:course_detail' course.pk %}">
+                                        <h3>{{ course.title }}</h3>
+                                        <p class="teacher">{{ course.teacher }}</p>
                                     </a>
-                                    <p class="comment-count">{{ post.comments.count }} Comment{{ post.comments.count|pluralize }}</p>
+                                    <p class="description">{{ course.description|truncatechars:100 }}</p>
                                 </div>
                             </li>
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p>No posts available at the moment.</p>
+                    <p>No courses available at the moment.</p>
+                {% endif %}
+            </section>
+
+            <section class="card teachers-card">
+                <h2>Teachers You May Know</h2>
+                {% if teachers %}
+                    <ul>
+                        {% for teacher in teachers %}
+                            <li>
+                                <div class="card teacher-card">
+                                    <div class="user-icon">{{ teacher.first_name.0 }}{{ teacher.last_name.0 }}</div>
+                                    <div class="user-info-details">
+                                        <a href="{% url 'account:profile' username=teacher.username %}">
+                                            <h3>{{ teacher.first_name }} {{ teacher.last_name }}</h3>
+                                        </a>
+                                        <p class="position">{{ teacher.position }}</p>
+                                        <p class="address">{{ teacher.address }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No teachers available at the moment.</p>
+                {% endif %}
+            </section>
+
+            <section class="card students-card">
+                <h2>Students You May Know</h2>
+                {% if students %}
+                    <ul>
+                        {% for student in students %}
+                            <li>
+                                <div class="card student-card">
+                                    <div class="user-icon">{{ student.first_name.0 }}{{ student.last_name.0 }}</div>
+                                    <div class="user-info-details">
+                                        <a href="{% url 'account:profile' username=student.username %}">
+                                            <h3>{{ student.first_name }} {{ student.last_name }}</h3>
+                                        </a>
+                                        <p class="position">{{ student.position }}</p>
+                                        <p class="address">{{ student.address }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No students available at the moment.</p>
                 {% endif %}
             </section>
         </section>
     </div>
+<script src="{% static 'js/expand-comment.js' %}"></script>
+
 </body>
 </html>

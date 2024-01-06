@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ post.title }} - Post Detail</title>
-    {% load static %}
-    <style>
-        body {
+   body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
@@ -88,39 +81,3 @@
             font-weight: bold;
             color: #333;
         }
-    </style>
-</head>
-<body>
-{#    <header>#}
-{#        <!-- Header content, e.g., navigation, user info, etc. -->#}
-{#    </header>#}
-
-    <div class="content-container">
-        <section class="post-detail-section">
-            <div class="post-card">
-                <div class="post-header">
-                    <div class="user-icon">{{ post.author.first_name.0 }}{{ post.author.last_name.0 }}</div>
-                    <div class="user-info-details">
-                        <div class="user-info">
-                            <a href="{% url 'account:profile' username=post.author.username %}">
-                                <h3 class="full-name">{{ post.author.first_name }} {{ post.author.last_name }}</h3>
-                            </a>
-                            <p class="post-date">{{ post.created|date:"F j, Y, g:i a" }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="post-content">
-                    <h1>{{ post.title }}</h1>
-                    <p>{{ post.text }}</p>
-                </div>
-                <div class="post-footer">
-
-                    <p class="comment-count">{{ post.comments.count }} Comment{{ post.comments.count|pluralize }}</p>
-
-                </div>
-            </div>
-        </section>
-    </div>
-</body>
-</html>
