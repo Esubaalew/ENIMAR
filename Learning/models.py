@@ -27,3 +27,32 @@ class Course(models.Model):
         return reverse('learning:course_detail', args=[str(self.pk)])
 
 
+class Assessment(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='assessments')
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    def __str__(self):
+        return self.name
+
+class Question(models.Model):
+    assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE, related_name='questions')
+    question_text = models.CharField(max_length=200)
+    choices = models.ManyToManyField('Choice', through='QuestionChoice', related_name='questions')
+    def __str__(self):
+        return self.question_text
+
+class Choice(models.Model):
+    choice_text = models.CharField(max_length=200)
+    description = models.TextField(max_length=300)
+    def __str__(self):
+        return self.choice_text
+    
+
+class QuestionChoice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question_choices')
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE, related_name='question_choices')
+    is_correct = models.BooleanField(default=False)
+    def __str__(self):
+        return self.choice.choice_text
+    
+   

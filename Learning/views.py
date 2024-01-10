@@ -6,7 +6,6 @@ from .models import Course
 from .forms import CourseCreationForm
 from django.http import HttpResponse
 
-
 def course_list(request):
     courses = Course.objects.all()
     return render(request, 'Learning/course/list.html', {'courses': courses})
@@ -51,3 +50,6 @@ def create_course(request):
         form = CourseCreationForm()
 
     return render(request, 'Learning/course/create.html', {'form': form, 'user': user })
+
+
+
