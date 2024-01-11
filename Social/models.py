@@ -8,8 +8,7 @@ class Photo(models.Model):
 
 
 class Video(models.Model):
-    video_file = models.FileField(upload_to='Social/videos/', default=None)
-
+    video_file = models.FileField(upload_to='Social/videos/')
 
 class Post(models.Model):
     title = models.CharField(max_length=100)

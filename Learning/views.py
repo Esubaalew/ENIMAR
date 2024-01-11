@@ -6,6 +6,7 @@ from .models import Course
 from .forms import CourseCreationForm
 from django.http import HttpResponse
 
+
 def course_list(request):
     courses = Course.objects.all()
     return render(request, 'Learning/course/list.html', {'courses': courses})
@@ -34,6 +35,9 @@ class CourseDetailView(DetailView):
 
 @login_required
 def create_course(request):
+    if request.user.is_anonymous:
+        redirect('account:login')
+
     user = request.user
     if request.method == 'POST':
         form = CourseCreationForm(request.POST, request.FILES)
@@ -49,7 +53,4 @@ def create_course(request):
     else:
         form = CourseCreationForm()
 
-    return render(request, 'Learning/course/create.html', {'form': form, 'user': user })
-
-
-
+    return render(request, 'Learning/course/create.html', {'form': form, 'user': user})

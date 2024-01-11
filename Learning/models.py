@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-
 from Account.models import Teacher, Student
 from django.urls import reverse
 from django.utils import timezone
@@ -31,28 +30,54 @@ class Assessment(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='assessments')
     name = models.CharField(max_length=200)
     description = models.TextField()
+
     def __str__(self):
         return self.name
+
 
 class Question(models.Model):
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE, related_name='questions')
     question_text = models.CharField(max_length=200)
     choices = models.ManyToManyField('Choice', through='QuestionChoice', related_name='questions')
+
     def __str__(self):
         return self.question_text
+
 
 class Choice(models.Model):
     choice_text = models.CharField(max_length=200)
     description = models.TextField(max_length=300)
+
     def __str__(self):
         return self.choice_text
-    
+
 
 class QuestionChoice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question_choices')
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE, related_name='question_choices')
     is_correct = models.BooleanField(default=False)
+
     def __str__(self):
         return self.choice.choice_text
-    
-   
+
+
+class Reading(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField(max_length=500)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='readings')
+
+
+class File(models.Model):
+    file_name = models.CharField(max_length=40)
+    file_url = models.FileField(upload_to='learning/files')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='files')
+
+
+class CoursePhoto(models.Model):
+    image = models.ImageField(upload_to='learning/course/photos/')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='photos')
+
+
+class CourseVideo(models.Model):
+    video_file = models.FileField(upload_to='learning/course/videos/')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='videos')

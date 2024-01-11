@@ -4,6 +4,6 @@
     {{ form.as_p }}
     <button type="submit">Create Course</button>
 </form>
-{% elif user.is_student %}
-    <h2>Student aren't allowed to  create course</h2>
+{% else  %}
+    <h2>Non Teachers aren't allowed to  create course</h2>
 {% endif %}

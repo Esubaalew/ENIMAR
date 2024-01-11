@@ -1,0 +1,18 @@
+{% extends 'learning/base.html' %}
+
+{% block title %}Create Post{% endblock %}
+{% load static %}
+{% block css %}
+    {{ block.super }}
+    <!-- Add any additional CSS specific to this template if needed -->
+    <link rel="stylesheet" href="{% static 'css/create_post.css' %}">
+{% endblock %}
+
+{% block body %}
+    <h2>Create a Post</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Post</button>
+    </form>
+{% endblock %}
