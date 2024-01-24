@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Course,
-    Assessment,
+    Quiz,
     Question,
     Choice,
     QuestionChoice,
@@ -28,7 +28,7 @@ class QuestionChoiceInline(admin.TabularInline):
 
 
 class AssessmentInline(admin.TabularInline):
-    model = Assessment
+    model = Quiz
     extra = 1
 
 
@@ -45,7 +45,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('question_text', 'assessment')
+    list_display = ('question_text', 'quiz')
     inlines = [QuestionChoiceInline]
 
 
@@ -58,7 +58,7 @@ class QuestionChoiceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Course, CourseAdmin)
-admin.site.register(Assessment, AssessmentAdmin)
+admin.site.register(Quiz, AssessmentAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice, ChoiceAdmin)
 admin.site.register(QuestionChoice, QuestionChoiceAdmin)
@@ -79,6 +79,6 @@ class CourseVideoAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(CourseVideo)
-class CourseVideoAdmin(admin.ModelAdmin):
+@admin.register(CoursePhoto)
+class CoursePhotoAdmin(admin.ModelAdmin):
     pass

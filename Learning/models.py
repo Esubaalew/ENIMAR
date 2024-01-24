@@ -26,7 +26,7 @@ class Course(models.Model):
         return reverse('learning:course_detail', args=[str(self.pk)])
 
 
-class Assessment(models.Model):
+class Quiz(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='assessments')
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -36,7 +36,7 @@ class Assessment(models.Model):
 
 
 class Question(models.Model):
-    assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE, related_name='questions')
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
     question_text = models.CharField(max_length=200)
     choices = models.ManyToManyField('Choice', through='QuestionChoice', related_name='questions')
 
