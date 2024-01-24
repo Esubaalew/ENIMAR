@@ -9,7 +9,7 @@ from django.utils import timezone
 class Course(models.Model):
     title = models.CharField(max_length=30)
     description = models.TextField()
-    poster = models.ImageField(upload_to='Learning/course/posters/', help_text='An image representing the course')
+    poster = models.ImageField(upload_to='learning/course/posters/', help_text='An image representing the course')
     price = models.DecimalField(max_digits=10, decimal_places=2)
     teacher = models.ForeignKey(Teacher, on_delete=models.PROTECT, related_name='courses')
     students = models.ManyToManyField(Student, related_name='enrolled_courses', blank=True)

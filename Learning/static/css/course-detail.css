@@ -9,8 +9,9 @@
 }
 
 .course-detail-card img {
-    max-width: 100%;
-    height: auto;
+    width: 550px;  /* Fixed width */
+    height: 143px; /* Fixed height */
+    object-fit: cover; /* Maintain aspect ratio and cover the space */
     margin-bottom: 15px;
 }
 

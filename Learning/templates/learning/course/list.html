@@ -15,7 +15,7 @@
         {% for course in courses %}
             <div class="course-card">
                 <h2><a href="{% url 'learning:course_detail' pk=course.pk %}">{{ course.title }}</a></h2>
-                <img src="{{ course.poster.url }}" alt="{{ course.title }} Poster">
+                <img src="{{ course.poster.url }}" alt="{{ course.title }} Poster"  width=353 height=143>
                 <p class="description">{{ course.description }}</p>
                 <p class="teacher">Teacher: {{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
                 <p class="students">Number of Students: {{ course.students.count }}</p>
