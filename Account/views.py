@@ -40,7 +40,7 @@ class CustomLoginView(LoginView):
 
         if user.is_staff:
             return reverse('admin:index')
-        elif user.is_teacher and user.is_student:
+        else:
             return reverse('home')
 
 

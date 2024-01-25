@@ -19,7 +19,7 @@ def enroll(request, pk):
     username = user.username
     if user.is_student:
         user = Student.objects.get(username=username)
-        user.courses.add(course)
+        user.enrolled_courses.add(course)
         response_content = f'Registered for a course  successfully'
         return HttpResponse(response_content)
     else:
