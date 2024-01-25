@@ -1,6 +1,6 @@
 from django import forms
 
-from Account.models import Teacher
+from Account.models import Teacher, Student
 from .models import Post, Video, Course, Photo
 
 

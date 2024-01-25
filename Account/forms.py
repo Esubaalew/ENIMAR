@@ -19,7 +19,6 @@ class TeacherRegistrationForm(UserCreationForm):
             user.save()
         return user
 
-
 class StudentRegistrationForm(UserCreationForm):
     class Meta:
         model = Student

@@ -4,11 +4,11 @@ from Account.models import CustomUser
 
 
 class Photo(models.Model):
-    image = models.ImageField(upload_to='Social/photos/')
+    image = models.ImageField(upload_to='social/post/photos/')
 
 
 class Video(models.Model):
-    video_file = models.FileField(upload_to='Social/videos/')
+    video_file = models.FileField(upload_to='social/post/videos/')
 
 
 class Post(models.Model):

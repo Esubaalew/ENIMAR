@@ -19,9 +19,8 @@ def create_post(request):
     if not (request.user.is_teacher or request.user.is_student):
         return HttpResponse("Unauthorized", status=401)
     user = request.user
-
     if request.method == 'POST':
-        form = PostCreationForm(request.POST, request.FILES, user=request.user)
+        form = PostCreationForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
 

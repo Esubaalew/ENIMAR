@@ -1,5 +1,7 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+
 from .forms import StudentRegistrationForm, TeacherRegistrationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
@@ -34,7 +36,13 @@ class CustomLoginView(LoginView):
         return context
 
     def get_success_url(self):
-        return '/home'
+        user = self.request.user
+
+        if user.is_staff:
+            return reverse('admin:index')
+        elif user.is_teacher and user.is_student:
+            return reverse('home')
+
 
 
 @login_required
