@@ -9,5 +9,4 @@ urlpatterns = [
     path('courses/create/', views.create_course, name='create_course'),
     path('courses/<int:pk>', CourseDetailView.as_view(), name='course_detail'),
     path('courses/enroll/<int:pk>', views.enroll, name='enroll'),
-    
 ]

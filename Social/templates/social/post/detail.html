@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{% static 'css/post-detail.css' %}">
 {% endblock %}
 {% block body %}
-     <div class="content-container">
+    <div class="content-container">
         <section class="post-detail-section">
             <div class="post-card">
                 <div class="post-header">
@@ -25,6 +25,13 @@
                     <h1>{{ post.title }}</h1>
                     <p>{{ post.text }}</p>
                 </div>
+                {% if post.photos.all %}
+                    <div class="photo-gallery">
+                        {% for photo in post.photos.all %}
+                            <img src="{{ photo.image.url }}" alt="{{ post.title }} Poster" width="300" height="300">
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 <div class="post-footer">
 
                     <p class="comment-count">{{ post.comments.count }} Comment{{ post.comments.count|pluralize }}</p>
