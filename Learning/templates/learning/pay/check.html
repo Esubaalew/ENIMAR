@@ -1,0 +1,24 @@
+{% extends 'Learning/base.html'%} {% load static %} {% block title %} Payment
+Checker {% endblock %} {% block css%} {{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/check.css' %}" />
+{% endblock %} {% block body %}
+<div class="container">
+  <header>
+    <h1>Payment Checker</h1>
+  </header>
+  <section class="instructions">
+    <h2>Check your payment status</h2>
+    <p>Enter your details below to verify your payment.</p>
+  </section>
+  <form action="{% url 'learning:check' pk %}" method="post">
+    {% csrf_token %}
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required />
+    <label for="transaction-id">Transaction ID:</label>
+    <input type="text" id="transaction-id" name="transaction_id" required />
+    <label for="date">Date of Payment:</label>
+    <input type="date" id="date" name="date" required />
+    <button type="submit">Check Payment</button>
+  </form>
+</div>
+{% endblock %}

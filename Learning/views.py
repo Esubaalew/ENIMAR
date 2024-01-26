@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.views.generic import DetailView
 from Account.models import Teacher, Student
 from .models import Course
@@ -11,6 +11,19 @@ def course_list(request):
     courses = Course.objects.all()
     return render(request, 'Learning/course/list.html', {'courses': courses})
 
+from django.shortcuts import render, redirect
+
+def payment(request, pk):
+    if request.method == 'POST':
+        transaction_id = str(request.POST.get('transaction_id'))
+     
+        if transaction_id.lower().startswith("eth"):
+            
+            return redirect(reverse('learning:enroll', kwargs={'pk': pk}))
+        else:
+            
+            return HttpResponse('Invalid Transaction')
+    return render(request, 'learning/pay/check.html',{'pk':pk})
 
 @login_required
 def enroll(request, pk):
