@@ -27,7 +27,10 @@ class Course(models.Model):
 
 
 class Quiz(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='assessments')
+    subsection = models.ForeignKey(
+        'Subsection',
+        on_delete=models.CASCADE,
+        related_name='quizzes', default=None)
     name = models.CharField(max_length=200)
     description = models.TextField()
 
@@ -61,23 +64,47 @@ class QuestionChoice(models.Model):
         return self.choice.choice_text
 
 
+class Section(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
+
+    def __str__(self):
+        return self.name
+
+
+class Subsection(models.Model):
+    name = models.CharField(max_length=100)
+    content = models.TextField()
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='subsections')
+
+    def __str__(self):
+        return self.name
+
+
 class Reading(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField(max_length=500)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='readings')
+    subsection = models.ForeignKey(Subsection, on_delete=models.CASCADE, related_name='readings', default=None)
+
+    def __str__(self):
+        return self.title
 
 
 class File(models.Model):
     file_name = models.CharField(max_length=40)
     file_url = models.FileField(upload_to='learning/files')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='files')
+    subsection = models.ForeignKey(Subsection, on_delete=models.CASCADE, related_name='files', default=None)
+
+    def __str__(self):
+        return self.file_name
 
 
 class CoursePhoto(models.Model):
     image = models.ImageField(upload_to='learning/course/photos/')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='photos')
+    subsection = models.ForeignKey(Subsection, on_delete=models.CASCADE, related_name='photos', default=None)
 
 
 class CourseVideo(models.Model):
     video_file = models.FileField(upload_to='learning/course/videos/')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='videos')
+    subsection = models.ForeignKey(Subsection, on_delete=models.CASCADE, related_name='videos', default=None)

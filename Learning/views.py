@@ -12,19 +12,22 @@ def course_list(request):
     courses = Course.objects.all()
     return render(request, 'Learning/course/list.html', {'courses': courses})
 
+
 from django.shortcuts import render, redirect
+
 
 def payment(request, pk):
     if request.method == 'POST':
         transaction_id = str(request.POST.get('transaction_id'))
-     
+
         if transaction_id.lower().startswith("eth"):
-            
+
             return redirect(reverse('learning:enroll', kwargs={'pk': pk}))
         else:
-            
+
             return HttpResponse('Invalid Transaction')
-    return render(request, 'learning/pay/check.html',{'pk':pk})
+    return render(request, 'learning/pay/check.html', {'pk': pk})
+
 
 @login_required
 def enroll(request, pk):
@@ -68,3 +71,11 @@ def create_course(request):
         form = CourseCreationForm()
 
     return render(request, 'Learning/course/create.html', {'form': form, 'user': user})
+
+
+def attend(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    sections = course.sections.all()
+
+    return render(request, 'Learning/course/learn.html',
+                  {'course': course, 'sections': sections})

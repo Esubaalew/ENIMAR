@@ -10,5 +10,6 @@ urlpatterns = [
     path('courses/<int:pk>', CourseDetailView.as_view(), name='course_detail'),
     path('courses/enroll/<int:pk>', views.enroll, name='enroll'),
     path('payment/check/<int:pk>', views.payment, name='check'),
+    path('course/attend/<int:pk>', views.attend, name='attend')
     
 ]

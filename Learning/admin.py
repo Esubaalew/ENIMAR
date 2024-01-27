@@ -8,7 +8,7 @@ from .models import (
     Reading,
     File,
     CoursePhoto,
-    CourseVideo
+    CourseVideo, Subsection, Section
 )
 
 
@@ -32,8 +32,8 @@ class AssessmentInline(admin.TabularInline):
     extra = 1
 
 
-class AssessmentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'course', 'description')
+class QuizAdmin(admin.ModelAdmin):
+    list_display = ('name', 'subsection', 'description')
     inlines = [QuestionInline]
 
 
@@ -41,7 +41,6 @@ class CourseAdmin(admin.ModelAdmin):
     list_display = ['title', 'teacher', 'created', 'updated']
     search_fields = ['title', 'teacher__firstname', 'teacher__lastname', 'description']
     list_filter = ['teacher__first_name', 'updated', 'created']
-    inlines = [AssessmentInline]
 
 
 class QuestionAdmin(admin.ModelAdmin):
@@ -58,7 +57,7 @@ class QuestionChoiceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Course, CourseAdmin)
-admin.site.register(Quiz, AssessmentAdmin)
+admin.site.register(Quiz)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice, ChoiceAdmin)
 admin.site.register(QuestionChoice, QuestionChoiceAdmin)
@@ -66,7 +65,7 @@ admin.site.register(QuestionChoice, QuestionChoiceAdmin)
 
 @admin.register(Reading)
 class ReadingAdmin(admin.ModelAdmin):
-    list_display = ('title', 'course')
+    list_display = ('title', 'subsection')
 
 
 @admin.register(File)
@@ -82,3 +81,13 @@ class CourseVideoAdmin(admin.ModelAdmin):
 @admin.register(CoursePhoto)
 class CoursePhotoAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Section)
+class SectionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'course')
+
+
+@admin.register(Subsection)
+class SubsectionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'section')
