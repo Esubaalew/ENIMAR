@@ -12,6 +12,7 @@
     <div class="user-info">
         <div class="user-icon">{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
         <span>{{ user.full_name }}</span>
+        <a href="{% url 'account:logout' %}" class="logout-button">Logout</a>
     </div>
 </header>
 <body>

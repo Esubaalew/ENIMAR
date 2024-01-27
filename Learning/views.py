@@ -6,14 +6,12 @@ from Account.models import Teacher, Student
 from .models import Course
 from .forms import CourseCreationForm
 from django.http import HttpResponse
+from django.shortcuts import render, redirect
 
 
 def course_list(request):
     courses = Course.objects.all()
     return render(request, 'Learning/course/list.html', {'courses': courses})
-
-
-from django.shortcuts import render, redirect
 
 
 def payment(request, pk):
@@ -38,7 +36,7 @@ def enroll(request, pk):
         user = Student.objects.get(username=username)
         user.enrolled_courses.add(course)
         response_content = f'Registered for a course  successfully'
-        return HttpResponse(response_content)
+        return redirect(reverse('learning:attend', kwargs={'pk': pk}))
     else:
         response_content = f'you can not enroll for a course by a teacher account'
         return HttpResponse(response_content)

@@ -29,8 +29,9 @@ urlpatterns = [
         'learning/',
         include('Learning.urls',
                 namespace='learning'))
-    ,path('social/', include('Social.urls', namespace='social')),
-    path("home/", views.home, name='home')
+    , path('social/', include('Social.urls', namespace='social')),
+    path("home/", views.home, name='home'),
+
 ]
 
 if settings.DEBUG:

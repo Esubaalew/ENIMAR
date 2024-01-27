@@ -21,10 +21,10 @@ def home(request):
         'teachers': teachers,
         'students': students,
         'posts': posts,
-        }
-
-    return render(request, 'home.html',  context=context)
-
+    }
+    if request.user.is_authenticated:
+        return render(request, 'home.html', context=context)
+    return render(request, 'guest.html', {'courses': courses})
 
 class CustomLoginView(LoginView):
     template_name = 'Account/student/login.html'
@@ -42,7 +42,6 @@ class CustomLoginView(LoginView):
             return reverse('admin:index')
         else:
             return reverse('home')
-
 
 
 @login_required

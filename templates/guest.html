@@ -1,0 +1,52 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/guest.css' %}">
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'account:login' %}">Login</a></li>
+            <li><a href="{% url 'account:teacher_registration' %}">Sign Up as Teacher</a></li>
+            <li><a href="{% url 'account:student_registration' %}">Sign Up as Student</a></li>
+            <li><a href="#">Courses</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="main-content">
+    <section class="ads-section">
+        <h2>Ads Section</h2>
+        <!-- Add your big advertisement content here -->
+        <p>Your coding journey starts here</p>
+    </section>
+
+    <section class="courses-section">
+        <h2>Available Courses</h2>
+        <div class="courses-container">
+            {% for course in courses %}
+                <div class="course">
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description }}</p>
+                    <img src="{{ course.poster.url }}" alt="{{ course.title }} Poster" width="300">
+                    <p>Price: ${{ course.price }}</p>
+                    <p>Teacher: {{ course.teacher }}</p>
+                    <!-- You can add more information about the course as needed -->
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p>ENIMAr 2023</p>
+</footer>
+
+</body>
+</html>

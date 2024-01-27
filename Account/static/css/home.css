@@ -157,3 +157,20 @@ li {
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.logout-button {
+    color: #fff;
+    background-color: #333;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-left: auto; /* Push the button to the far right */
+}
+
+.logout-button:hover {
+    background-color: #555;
+}
