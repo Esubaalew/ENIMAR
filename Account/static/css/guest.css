@@ -2,12 +2,18 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    position: relative;
 }
 
 header {
-    background-color: #333;
+    background-color: #5A8D97;
     color: #fff;
     padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+
 }
 
 nav ul {
@@ -31,7 +37,7 @@ nav a:hover {
 
 .main-content {
     max-width: 800px;
-    margin: 20px auto;
+    margin: 70px auto 120px; /* Adjusted margin-top and added margin-bottom */
 }
 
 .ads-section,
@@ -59,7 +65,7 @@ nav a:hover {
 }
 
 footer {
-    background-color: #333;
+    background-color: #5A8D97;
     color: #fff;
     text-align: center;
     padding: 10px 0;

@@ -76,6 +76,29 @@
                 <p>No posts available at the moment.</p>
             {% endif %}
         </section>
+     <section class="card courses-card">
+            <h2>Latest Courses</h2>
+            {% if courses %}
+                <ul>
+                    {% for course in courses %}
+                        <li>
+                            <div class="card course-card">
+                                <a href="{% url 'learning:course_detail' course.pk %}">
+                                    <h3>{{ course.title }}</h3>
+                                    <p class="teacher">{{ course.teacher }}</p>
+                                    {% if course.poster %}
+                                        <img src="{{ course.poster.url }}" alt="{{ course.title }} Poster" width="300" height="200">
+                                    {% endif %}
+                                </a>
+                                <p class="description">{{ course.description|truncatechars:100 }}</p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No courses available at the moment.</p>
+            {% endif %}
+        </section>
     </section>
     <section class="side-section">
         <section class="card courses-card">

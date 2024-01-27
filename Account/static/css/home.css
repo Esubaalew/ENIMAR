@@ -6,7 +6,7 @@ body {
 }
 
 header {
-    background-color: #3498db;
+    background-color: #5A8D97;
     color: #fff;
     padding: 10px;
     text-align: center;
@@ -51,7 +51,7 @@ header {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: #2ecc71;
+    background-color: #07223D;
     color: #fff;
     display: flex;
     align-items: center;
@@ -89,10 +89,10 @@ li {
 }
 
 .post-card .user-icon {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    background-color: #2ecc71;
+    background-color: #07223D;
     color: #fff;
     display: flex;
     align-items: center;
