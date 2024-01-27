@@ -4,7 +4,6 @@ Here is a list of awesome contributors to Enimar, organized by their role:
 
 ## Frontend Developers:
 
-- [Enatenesh Yisema](https://github.com/johndoe) - Frontend Developer
 - [Lydis Fikrie](https://github.com/lidu5) - Frontend Developer
 - [BEREKET GEBEYAW](https://github.com/Bereketgebeyaw) - Frontend Developer
 
