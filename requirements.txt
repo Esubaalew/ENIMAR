@@ -1,8 +1,9 @@
 asgiref==3.7.2
 asttokens==2.4.1
+channels==4.0.0
 colorama==0.4.6
 decorator==5.1.1
-Django==5.0
+Django==5.0.3
 executing==2.0.1
 ipython==8.18.1
 jedi==0.19.1
