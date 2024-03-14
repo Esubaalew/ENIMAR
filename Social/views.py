@@ -2,9 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.text import slugify
-
+from Account.models import CustomUser
 from .forms import PostCreationForm
-from .models import Post, Comment, Photo, Video
+from .models import Post, Comment, Photo, Video, Message
 from django.shortcuts import get_object_or_404
 
 
@@ -49,3 +49,30 @@ def create_post(request):
         form = PostCreationForm(user=request.user)
 
     return render(request, 'social/post/create.html', {'form': form, 'user': user})
+
+
+def chat_view(request):
+    return render(request, 'social/chat.html')
+
+
+@login_required
+def send_message(request, recipient_id):
+    if request.method == 'POST':
+        content = request.POST['content']
+        recipient = CustomUser.objects.get(pk=recipient_id)
+        message = Message.objects.create(sender=request.user, recipient=recipient, content=content)
+        return redirect('social:message_sent')
+    return render(request, 'social/send_message.html')
+
+
+@login_required
+def inbox(request):
+    received_messages = Message.objects.filter(recipient=request.user)
+    sent_messages = Message.objects.filter(sender=request.user)
+    messages = received_messages | sent_messages
+    return render(request, 'social/inbox.html', {'messages': messages, 'user': request.user})
+
+
+
+def message_sent(request):
+    return render(request, 'social/message_sent.html')

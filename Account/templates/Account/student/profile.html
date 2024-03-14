@@ -18,9 +18,10 @@
             <div class="profile-info">
                 <h1>{{ user.first_name }} {{ user.last_name }}</h1>
                 <button class="action-button follow-button">Follow</button>
-                <button class="action-button message-button">Message</button>
+                <button id="message-button" class="action-button message-button">Message</button>
                 <p class="position-location">{{ user.position }}, {{ user.address.city }}</p>
             </div>
+        </div>
         </div>
 
         <div class="profile-bio">
@@ -77,4 +78,10 @@
             </div>
         {% endfor %}
     </div>
+    
+     <script>
+        document.getElementById("message-button").addEventListener("click", function() {
+            window.location.href = "{% url 'social:send_message' recipient_id=user.id %}";
+        });
+    </script>
 {% endblock %}

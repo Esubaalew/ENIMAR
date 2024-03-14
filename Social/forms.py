@@ -1,7 +1,7 @@
 from django import forms
 
 from Account.models import Teacher, Student
-from .models import Post, Video, Course, Photo
+from .models import Post, Video, Course, Photo, Comment
 
 
 class PostCreationForm(forms.ModelForm):
@@ -24,3 +24,9 @@ class PostCreationForm(forms.ModelForm):
         else:
             self.fields['video_file'].widget = forms.HiddenInput()
             self.fields['course'].widget = forms.HiddenInput()
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .sent-message {
+            background-color: #f0f0f0;
+            text-align: left;
+        }
+        .received-message {
+            background-color: #dff0d8;
+            text-align: right;
+        }
+        .message p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Inbox</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {% if message.sender == user %}sent-message{% else %}received-message{% endif %}">
+                    <p><strong>{% if message.sender == user %}To{% else %}From{% endif %}:</strong> {{ message.sender }}</p>
+                    <p><strong>Message:</strong> {{ message.content }}</p>
+                    <p><strong>Date:</strong> {{ message.timestamp }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No messages</p>
+        {% endif %}
+    </div>
+</body>
+</html>

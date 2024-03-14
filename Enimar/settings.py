@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Enimar.wsgi.application'
+ASGI_APPLICATION = 'Enimar.routing.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
