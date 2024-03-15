@@ -55,6 +55,16 @@ def create_post(request):
 
 @login_required
 def send_message(request, recipient_id):
+    
+    has_message = Message.objects.filter(
+    Q(sender=request.user, recipient_id=recipient_id) |
+    Q(sender_id=recipient_id, recipient=request.user)
+).exists()
+
+
+    if has_message:
+        return redirect(reverse('social:conversation', args=[recipient_id]))
+
     if request.method == 'POST':
         content = request.POST['content']
         recipient = CustomUser.objects.get(pk=recipient_id)
