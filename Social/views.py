@@ -94,7 +94,8 @@ def inbox(request):
         if latest_message:
             conversation_dict[other_user_id]['latest_message'] = latest_message
 
-    conversations = sorted(list(conversation_dict.values()), key=lambda conv: conv['latest_message'].timestamp,
+    conversations = sorted(list(conversation_dict.values()),
+                           key=lambda conv: (conv['latest_message'].timestamp if conv['latest_message'] else None),
                            reverse=True)
 
     return render(request, 'social/inbox.html', {'conversations': conversations})
