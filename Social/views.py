@@ -52,10 +52,6 @@ def create_post(request):
     return render(request, 'social/post/create.html', {'form': form, 'user': user})
 
 
-def chat_view(request):
-    return render(request, 'social/chat.html')
-
-
 @login_required
 def send_message(request, recipient_id):
     if request.method == 'POST':
