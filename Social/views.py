@@ -6,7 +6,8 @@ from django.utils.text import slugify
 from Account.models import CustomUser
 from .forms import PostCreationForm
 from .models import Post, Comment, Photo, Video, Message
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect, reverse
 
 
 def post_detail(request, pk):
@@ -58,7 +59,7 @@ def send_message(request, recipient_id):
         content = request.POST['content']
         recipient = CustomUser.objects.get(pk=recipient_id)
         message = Message.objects.create(sender=request.user, recipient=recipient, content=content)
-        return redirect('social:message_sent')
+        return redirect(reverse('social:conversation', args=[recipient_id]))
     return render(request, 'social/send_message.html')
 
 
@@ -104,7 +105,3 @@ def conversation(request, other_user_id):
         sender=other_user, recipient=request.user)).order_by(
         'timestamp')
     return render(request, 'social/conversation.html', {'messages': messages, 'other_user': other_user})
-
-
-def message_sent(request):
-    return render(request, 'social/message_sent.html')
