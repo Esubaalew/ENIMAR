@@ -71,7 +71,7 @@
                                 <strong>{{ conversation.other_user.first_name }} {{ conversation.other_user.last_name }}</strong><br>
                                 {% if conversation.latest_message %}
                                     <span>{{ conversation.latest_message.content }}</span><br>
-                                    <small>{{ conversation.latest_message.timestamp }}</small>
+                                    <small>{{ conversation.latest_message.timestamp|timesince }}</small>
                                 {% endif %}
                             </div>
                         </a>

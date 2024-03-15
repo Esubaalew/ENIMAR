@@ -94,17 +94,18 @@ def inbox(request):
         if latest_message:
             conversation_dict[other_user_id]['latest_message'] = latest_message
 
-
-    conversations = list(conversation_dict.values())
+    conversations = sorted(list(conversation_dict.values()), key=lambda conv: conv['latest_message'].timestamp,
+                           reverse=True)
 
     return render(request, 'social/inbox.html', {'conversations': conversations})
 
 
 @login_required
 def conversation(request, other_user_id):
+    messages = Message.objects.filter(Q(sender=request.user, recipient_id=other_user_id) | Q(
+        sender_id=other_user_id,
 
-    messages = Message.objects.filter(Q(sender=request.user, recipient_id=other_user_id) | Q(sender_id=other_user_id,
-                                                                                             recipient=request.user)).order_by(
+        recipient=request.user)).order_by(
         'timestamp')
     return render(request, 'social/conversation.html', {'messages': messages, 'other_user_id': other_user_id})
 
