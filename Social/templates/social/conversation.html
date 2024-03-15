@@ -11,9 +11,25 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            overflow: hidden; /* Hide overflow to prevent scrollbar */
+        }
+        .conversation-heading {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+        .conversation-heading h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+        .conversation-messages {
+            max-height: 400px; /* Set max height for scrolling */
+            overflow-y: auto; /* Add scrollbar when content exceeds max height */
+            padding: 20px;
         }
         .message {
             padding: 10px;
@@ -35,17 +51,21 @@
 </head>
 <body>
     <div class="container">
-        <h2>Conversation with {{ other_user.first_name }}</h2>
-        {% if messages %}
-            {% for message in messages %}
-                <div class="message {% if message.sender == user %}sent-message{% else %}received-message{% endif %}">
-                    <p><strong>{% if message.sender == user %}You{% else %}{{ other_user.first_name }}{% endif %}:</strong> {{ message.content }}</p>
-                    <p>{{ message.timestamp|timesince }}</p>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No messages</p>
-        {% endif %}
+        <div class="conversation-heading">
+            <h2>Conversation with {{ other_user.first_name }}</h2>
+        </div>
+        <div class="conversation-messages">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message {% if message.sender == user %}sent-message{% else %}received-message{% endif %}">
+                        <p><strong>{% if message.sender == user %}You{% else %}{{ other_user.first_name }}{% endif %}:</strong> {{ message.content }}</p>
+                        <p>{{ message.timestamp|timesince }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No messages</p>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>
