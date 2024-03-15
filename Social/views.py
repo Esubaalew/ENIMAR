@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q, Max
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.text import slugify
@@ -67,11 +68,45 @@ def send_message(request, recipient_id):
 
 @login_required
 def inbox(request):
-    received_messages = Message.objects.filter(recipient=request.user)
-    sent_messages = Message.objects.filter(sender=request.user)
-    messages = received_messages | sent_messages
-    return render(request, 'social/inbox.html', {'messages': messages, 'user': request.user})
+    conversations = Message.objects.filter(Q(sender=request.user) | Q(recipient=request.user)).values('sender',
+                                                                                                      'recipient').annotate(
+        latest_message=Max('timestamp'))
 
+    conversation_dict = {}
+
+    for conversation in conversations:
+        if conversation['sender'] == request.user.pk:
+            other_user_id = conversation['recipient']
+        else:
+            other_user_id = conversation['sender']
+
+        if other_user_id not in conversation_dict:
+            conversation_dict[other_user_id] = {
+                'other_user': CustomUser.objects.get(pk=other_user_id),
+                'latest_message': None
+            }
+
+        latest_message = Message.objects.filter(
+            Q(sender=conversation['sender'], recipient=request.user) | Q(sender=request.user,
+                                                                         recipient=conversation['sender'])
+        ).order_by('-timestamp').first()
+
+        if latest_message:
+            conversation_dict[other_user_id]['latest_message'] = latest_message
+
+
+    conversations = list(conversation_dict.values())
+
+    return render(request, 'social/inbox.html', {'conversations': conversations})
+
+
+@login_required
+def conversation(request, other_user_id):
+
+    messages = Message.objects.filter(Q(sender=request.user, recipient_id=other_user_id) | Q(sender_id=other_user_id,
+                                                                                             recipient=request.user)).order_by(
+        'timestamp')
+    return render(request, 'social/conversation.html', {'messages': messages, 'other_user_id': other_user_id})
 
 
 def message_sent(request):

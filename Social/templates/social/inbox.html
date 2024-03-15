@@ -7,45 +7,79 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
+
         .container {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .message {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
+
+        h2 {
+            text-align: center;
+            color: #333;
         }
-        .sent-message {
-            background-color: #f0f0f0;
-            text-align: left;
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
         }
-        .received-message {
-            background-color: #dff0d8;
-            text-align: right;
+
+        li {
+            margin-bottom: 15px;
         }
-        .message p {
-            margin: 5px 0;
+
+        .chat-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ccc;
+            text-align: center;
+            line-height: 50px;
+            font-size: 20px;
+            margin-right: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Inbox</h2>
-        {% if messages %}
-            {% for message in messages %}
-                <div class="message {% if message.sender == user %}sent-message{% else %}received-message{% endif %}">
-                    <p><strong>{% if message.sender == user %}To{% else %}From{% endif %}:</strong> {{ message.sender }}</p>
-                    <p><strong>Message:</strong> {{ message.content }}</p>
-                    <p><strong>Date:</strong> {{ message.timestamp }}</p>
-                </div>
-            {% endfor %}
+        {% if conversations %}
+            <ul>
+                {% for conversation in conversations %}
+                    <li>
+                       <a href="{% url 'social:conversation' conversation.other_user.id %}" class="chat-link">
+
+                            <div class="profile-pic">
+                                {{ conversation.other_user.first_name.0 }}{{ conversation.other_user.last_name.0 }}
+                            </div>
+                            <div>
+                                <strong>{{ conversation.other_user.first_name }} {{ conversation.other_user.last_name }}</strong><br>
+                                {% if conversation.latest_message %}
+                                    <span>{{ conversation.latest_message.content }}</span><br>
+                                    <small>{{ conversation.latest_message.timestamp }}</small>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
         {% else %}
-            <p>No messages</p>
+            <p>No conversations</p>
         {% endif %}
     </div>
 </body>
