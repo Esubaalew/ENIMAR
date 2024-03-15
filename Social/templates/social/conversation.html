@@ -13,7 +13,7 @@
             margin: 0 auto;
             border: 1px solid #ccc;
             border-radius: 5px;
-            overflow: hidden; /* Hide overflow to prevent scrollbar */
+            overflow: hidden;
         }
         .conversation-heading {
             background-color: #f0f0f0;
@@ -27,14 +27,16 @@
             color: #333;
         }
         .conversation-messages {
-            max-height: 400px; /* Set max height for scrolling */
-            overflow-y: auto; /* Add scrollbar when content exceeds max height */
+            max-height: 400px;
+            overflow-y: auto;
             padding: 20px;
         }
         .message {
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
+            display: flex;
+            flex-direction: column;
         }
         .sent-message {
             background-color: #f0f0f0;
@@ -42,10 +44,32 @@
         }
         .received-message {
             background-color: #dff0d8;
-            text-align: right;
+            text-align: left;
+            padding-left: 10px;
         }
         .message p {
             margin: 5px 0;
+        }
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ccc;
+            text-align: center;
+            line-height: 40px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .sender-info {
+            display: flex;
+            align-items: center;
+        }
+        .sender-name {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .timestamp {
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -58,8 +82,22 @@
             {% if messages %}
                 {% for message in messages %}
                     <div class="message {% if message.sender == user %}sent-message{% else %}received-message{% endif %}">
-                        <p><strong>{% if message.sender == user %}You{% else %}{{ other_user.first_name }}{% endif %}:</strong> {{ message.content }}</p>
-                        <p>{{ message.timestamp|timesince }}</p>
+                        <div class="sender-info">
+                            <div class="profile-pic">
+                                {{ message.sender.first_name.0 }}{{ message.sender.last_name.0 }}
+                            </div>
+                            <div class="sender-name">
+                                {% if message.sender == user %}
+                                    You
+                                {% else %}
+                                    {{ message.sender.first_name }} {{ message.sender.last_name }}
+                                {% endif %}
+                            </div>
+                            <div class="timestamp">
+                                <p>{{ message.timestamp|timesince }}</p>
+                            </div>
+                        </div>
+                        <p>{{ message.content }}</p>
                     </div>
                 {% endfor %}
             {% else %}
