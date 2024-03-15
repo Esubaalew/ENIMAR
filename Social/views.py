@@ -55,7 +55,6 @@ def create_post(request):
 
 @login_required
 def send_message(request, recipient_id):
-    
     has_message = Message.objects.filter(
     Q(sender=request.user, recipient_id=recipient_id) |
     Q(sender_id=recipient_id, recipient=request.user)
@@ -111,7 +110,16 @@ def inbox(request):
 @login_required
 def conversation(request, other_user_id):
     other_user = get_object_or_404(CustomUser, pk=other_user_id)
-    messages = Message.objects.filter(Q(sender=request.user, recipient=other_user) | Q(
-        sender=other_user, recipient=request.user)).order_by(
-        'timestamp')
+    messages = Message.objects.filter(
+        Q(sender=request.user, recipient=other_user) | Q(sender=other_user, recipient=request.user)
+    ).order_by('timestamp')
+
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        recipient_id = request.POST.get('recipient_id')
+        recipient = get_object_or_404(CustomUser, pk=recipient_id)
+        message = Message.objects.create(sender=request.user, recipient=recipient, content=content)
+        return redirect(reverse('social:conversation', args=[other_user_id]))
+
     return render(request, 'social/conversation.html', {'messages': messages, 'other_user': other_user})
+
