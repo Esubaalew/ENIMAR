@@ -69,6 +69,9 @@ def send_message(request, recipient_id):
         recipient = CustomUser.objects.get(pk=recipient_id)
         message = Message.objects.create(sender=request.user, recipient=recipient, content=content)
         return redirect(reverse('social:conversation', args=[recipient_id]))
+    if request.user == CustomUser.objects.get(pk=recipient_id):
+        return HttpResponse('Fobidden')
+        
     return render(request, 'social/send_message.html')
 
 

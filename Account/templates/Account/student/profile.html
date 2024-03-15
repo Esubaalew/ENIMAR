@@ -18,7 +18,9 @@
             <div class="profile-info">
                 <h1>{{ user.first_name }} {{ user.last_name }}</h1>
                 <button class="action-button follow-button">Follow</button>
+                {%if not request.user == user %}
                 <button id="message-button" class="action-button message-button">Message</button>
+                {% endif %}
                 <p class="position-location">{{ user.position }}, {{ user.address.city }}</p>
             </div>
         </div>
