@@ -35,12 +35,12 @@
 </head>
 <body>
     <div class="container">
-        <h2>Conversation with {{ other_user_id }}</h2>
+        <h2>Conversation with {{ other_user.first_name }}</h2>
         {% if messages %}
             {% for message in messages %}
                 <div class="message {% if message.sender == user %}sent-message{% else %}received-message{% endif %}">
-                    <p><strong>{% if message.sender == user %}You{% else %}{{ other_user_id }}{% endif %}:</strong> {{ message.content }}</p>
-                    <p><strong>Date:</strong> {{ message.timestamp }}</p>
+                    <p><strong>{% if message.sender == user %}You{% else %}{{ other_user.first_name }}{% endif %}:</strong> {{ message.content }}</p>
+                    <p>{{ message.timestamp|timesince }}</p>
                 </div>
             {% endfor %}
         {% else %}
