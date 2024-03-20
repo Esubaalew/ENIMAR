@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.text import slugify
 from Account.models import CustomUser
-from .forms import PostCreationForm
+from .forms import PostCreationForm, CommentForm
 from .models import Post, Comment, Photo, Video, Message
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import redirect, reverse
@@ -12,8 +12,20 @@ from django.shortcuts import redirect, reverse
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    comments = Comment.objects.filter(post=post)
 
-    return render(request, 'social/post/detail.html', {'post': post})
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.save()
+
+    else:
+        form = CommentForm()
+
+    return render(request, 'social/post/detail.html', {'post': post, 'comments': comments, 'form': form})
 
 
 @login_required
@@ -56,10 +68,9 @@ def create_post(request):
 @login_required
 def send_message(request, recipient_id):
     has_message = Message.objects.filter(
-    Q(sender=request.user, recipient_id=recipient_id) |
-    Q(sender_id=recipient_id, recipient=request.user)
-).exists()
-
+        Q(sender=request.user, recipient_id=recipient_id) |
+        Q(sender_id=recipient_id, recipient=request.user)
+    ).exists()
 
     if has_message:
         return redirect(reverse('social:conversation', args=[recipient_id]))
@@ -71,7 +82,7 @@ def send_message(request, recipient_id):
         return redirect(reverse('social:conversation', args=[recipient_id]))
     if request.user == CustomUser.objects.get(pk=recipient_id):
         return HttpResponse('Fobidden')
-        
+
     return render(request, 'social/send_message.html')
 
 
@@ -125,4 +136,3 @@ def conversation(request, other_user_id):
         return redirect(reverse('social:conversation', args=[other_user_id]))
 
     return render(request, 'social/conversation.html', {'messages': messages, 'other_user': other_user})
-

@@ -11,6 +11,7 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('text', 'post', 'user', 'created', 'updated',)
+    list_filter = ('created', 'updated',)
 
 
 @admin.register(Video)
