@@ -3,11 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 from .forms import StudentRegistrationForm, TeacherRegistrationForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import LoginView, LogoutView
-from .models import CustomUser, Teacher, Student
+from .models import CustomUser, Teacher, Student, Follow
 from Learning.models import Course
-from Social.models import Post, Comment
+from Social.models import Post, Comment, Photo, Video
 
 
 def home(request):
@@ -25,6 +25,7 @@ def home(request):
     if request.user.is_authenticated:
         return render(request, 'home.html', context=context)
     return render(request, 'guest.html', {'courses': courses})
+
 
 class CustomLoginView(LoginView):
     template_name = 'Account/student/login.html'
@@ -95,3 +96,27 @@ def teacher_registration(request):
         request,
         'Account/teacher/register.html',
         {'form': form})
+
+
+@login_required
+def follow(request, username):
+    user_to_follow = get_object_or_404(CustomUser, username=username)
+
+    if user_to_follow == request.user:
+        redirect('account:profile', username=username)
+
+    if not Follow.objects.filter(follower=request.user, followed=user_to_follow).exists():
+        Follow.objects.create(follower=request.user, followed=user_to_follow)
+
+    return redirect('account:profile', username=username)
+
+
+@login_required
+def unfollow(request, username):
+    user_to_unfollow = get_object_or_404(CustomUser, username=username)
+
+    if user_to_unfollow == request.user:
+        redirect('account:profile', username=username)
+
+    Follow.objects.filter(follower=request.user, followed=user_to_unfollow).delete()
+    return redirect('account:profile', username=username)

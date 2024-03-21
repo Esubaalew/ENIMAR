@@ -2,7 +2,7 @@
 
 {% block title %}{{ user.first_name }} {{ user.last_name }} Profile{% endblock %}
 
-{% load  static %}
+{% load static %}
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
@@ -14,30 +14,42 @@
             <div class="profile-photo">
                 <!-- Use the initials of the user for now -->
                 <p>{{ user.first_name.0 }}{{ user.last_name.0 }}</p>
+
             </div>
             <div class="profile-info">
                 <h1>{{ user.first_name }} {{ user.last_name }}</h1>
-                <button class="action-button follow-button">Follow</button>
-                {%if not request.user == user %}
-                <button id="message-button" class="action-button message-button">Message</button>
+                {% if request.user != user %}
+                    {% for follow_obj in user.followers.all %}
+                        {% if follow_obj.follower == request.user %}
+                            <a href="{% url 'account:unfollow' username=user.username %}"
+                               class="action-button follow-button">Unfollow</a>
+                            
+                        {% endif %}
+                    {% empty %}
+                        <a href="{% url 'account:follow' username=user.username %}" class="action-button follow-button">Follow</a>
+                    {% endfor %}
+
+
+                {% endif %}
+                {% if not request.user == user %}
+                    <button id="message-button" class="action-button message-button">Message</button>
                 {% endif %}
                 <p class="position-location">{{ user.position }}, {{ user.address.city }}</p>
             </div>
         </div>
-        </div>
+    </div>
 
-        <div class="profile-bio">
-            <p>{{ user.bio }}</p>
-        </div>
-        
-        <div class="separator"></div>
+    <div class="profile-bio">
+        <p>{{ user.bio }}</p>
+    </div>
 
-        <div class="follower-following-section">
-            <a href="#" class="followers-link">Posts</a>
-            <a href="#" class="following-link">Streams</a>
-            <a href="#" class="followers-link">Followers</a>
-            <a href="#" class="following-link">Following</a>
-        </div>
+    <div class="separator"></div>
+
+    <div class="follower-following-section">
+        <a href="#" class="followers-link">Posts</a>
+        <a href="#" class="following-link">Streams</a>
+        <a href="" class="followers-link">Followers</a>
+        <a href="#" class="following-link">Following</a>
     </div>
 
     <!-- Now the other card is following -->
@@ -68,7 +80,7 @@
         <div class="show-all-courses">
             <a href="#" class="show-all-link">Show All Courses</a>
         </div>
-        
+
         <!-- Display all posts by the user -->
         <div class="separator second"></div>
         <h2>All Posts by {{ user.first_name }} {{ user.last_name }}</h2>
@@ -80,9 +92,9 @@
             </div>
         {% endfor %}
     </div>
-    
-     <script>
-        document.getElementById("message-button").addEventListener("click", function() {
+
+    <script>
+        document.getElementById("message-button").addEventListener("click", function () {
             window.location.href = "{% url 'social:send_message' recipient_id=user.id %}";
         });
     </script>
