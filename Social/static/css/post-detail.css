@@ -95,3 +95,31 @@
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
+
+/* CSS for the like count */
+.like-count {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+/* CSS for the like button */
+.like-button {
+    background-color: transparent;
+    border: none;
+    color: black;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* CSS to highlight like button if user has liked the post */
+.like-button.blue {
+    color: blue;
+}
+/* CSS for the share button */
+.share-button {
+    background-color: transparent;
+    border: none;
+    color: black;
+    cursor: pointer;
+    font-size: 14px;
+}

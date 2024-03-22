@@ -19,6 +19,7 @@ class Post(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='posts')
     video = models.OneToOneField(Video, on_delete=models.CASCADE, null=True, blank=True)
     photos = models.ManyToManyField(Photo, related_name='posts', blank=True)
+    likes = models.ManyToManyField(CustomUser, related_name='liked_posts', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -27,6 +28,9 @@ class Post(models.Model):
         indexes = [
             models.Index(fields=['-created'])
         ]
+
+    def total_likes(self):
+        return self.likes.count()
 
     def __str__(self):
         return self.title
@@ -51,3 +55,12 @@ class Message(models.Model):
     recipient = models.ForeignKey(CustomUser, related_name='received_messages', on_delete=models.CASCADE)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class Share(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='shares')
+    shared_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='shared_posts')
+    shared_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.shared_by} shared {self.post}'

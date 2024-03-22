@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.utils.text import slugify
 from Account.models import CustomUser
 from .forms import PostCreationForm, CommentForm
-from .models import Post, Comment, Photo, Video, Message
+from .models import Post, Comment, Photo, Video, Message, Share
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import redirect, reverse
 
@@ -136,3 +136,18 @@ def conversation(request, other_user_id):
         return redirect(reverse('social:conversation', args=[other_user_id]))
 
     return render(request, 'social/conversation.html', {'messages': messages, 'other_user': other_user})
+
+
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    return redirect('social:post_detail', pk=pk)
+
+
+def share_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    share = Share.objects.create(post=post, shared_by=request.user)
+    return render(request, 'social/post/detail.html', {'post': post, 'share': share})
