@@ -8,115 +8,168 @@ from django.contrib.auth.views import LoginView, LogoutView
 from .models import CustomUser, Teacher, Student, Follow
 from Learning.models import Course
 from Social.models import Post, Comment, Photo, Video
+from rest_framework import generics, permissions, status, viewsets
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
+from .serializers import UserSerializer, UserSignInSerializer,StudentSerializer,TeacherSerializer,StudentViewSerializer,TeacherViewSerializer
+from rest_framework.permissions import AllowAny
 
+class StudentSignUp(generics.CreateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    permission_classes = [AllowAny]
 
-def home(request):
-    courses = Course.objects.all()
-    teachers = Teacher.objects.all()
-    students = Student.objects.all()
-    posts = Post.objects.all()
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            })
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    context = {
-        'courses': courses,
-        'teachers': teachers,
-        'students': students,
-        'posts': posts,
-    }
-    if request.user.is_authenticated:
-        return render(request, 'home.html', context=context)
-    return render(request, 'guest.html', {'courses': courses})
+class TeacherSignUp(generics.CreateAPIView):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
+    permission_classes = [AllowAny]
 
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            })
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class CustomLoginView(LoginView):
-    template_name = 'Account/student/login.html'
-    context_object_name = 'users'
+class UserSignInView(generics.CreateAPIView):
+    serializer_class = UserSignInSerializer
+    permission_classes = [permissions.AllowAny]
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['all_users'] = CustomUser.objects.all()
-        return context
-
-    def get_success_url(self):
-        user = self.request.user
-
-        if user.is_staff:
-            return reverse('admin:index')
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user:
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            }, status=status.HTTP_200_OK)
         else:
-            return reverse('home')
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@login_required
-def logout_(request):
-    logout(request)
-    return redirect('home')
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class StudentViewSet(viewsets.ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentViewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class TeacherViewSet(viewsets.ModelViewSet):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherViewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+# def home(request):
+#     courses = Course.objects.all()
+#     teachers = Teacher.objects.all()
+#     students = Student.objects.all()
+#     posts = Post.objects.all()
+
+#     context = {
+#         'courses': courses,
+#         'teachers': teachers,
+#         'students': students,
+#         'posts': posts,
+#     }
+#     if request.user.is_authenticated:
+#         return render(request, 'home.html', context=context)
+#     return render(request, 'guest.html', {'courses': courses})
 
 
-@login_required
-def profile(request, username):
-    student = None
-    teacher = None
-    user = CustomUser.objects.get(username=username)
-    if user.is_student:
-        student = Student.objects.get(username=username)
-    elif user.is_teacher:
-        teacher = Teacher.objects.get(username=username)
 
-    context = {'user': user, 'student': student, 'teacher': teacher}
-
-    return render(request, 'Account/student/profile.html', context=context)
+# @login_required
+# def logout_(request):
+#     logout(request)
+#     return redirect('home')
 
 
-def student_registration(request):
-    if request.method == 'POST':
-        form = StudentRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('/account/login/')
-    else:
-        form = StudentRegistrationForm()
+# @login_required
+# def profile(request, username):
+#     student = None
+#     teacher = None
+#     user = CustomUser.objects.get(username=username)
+#     if user.is_student:
+#         student = Student.objects.get(username=username)
+#     elif user.is_teacher:
+#         teacher = Teacher.objects.get(username=username)
 
-    return render(
-        request,
-        'Account/student/register.html',
-        {'form': form})
+#     context = {'user': user, 'student': student, 'teacher': teacher}
 
-
-def teacher_registration(request):
-    if request.method == 'POST':
-        form = TeacherRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('/account/login/')
-    else:
-        form = TeacherRegistrationForm()
-
-    return render(
-        request,
-        'Account/teacher/register.html',
-        {'form': form})
+#     return render(request, 'Account/student/profile.html', context=context)
 
 
-@login_required
-def follow(request, username):
-    user_to_follow = get_object_or_404(CustomUser, username=username)
+# def student_registration(request):
+#     if request.method == 'POST':
+#         form = StudentRegistrationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return redirect('/account/login/')
+#     else:
+#         form = StudentRegistrationForm()
 
-    if user_to_follow == request.user:
-        redirect('account:profile', username=username)
-
-    if not Follow.objects.filter(follower=request.user, followed=user_to_follow).exists():
-        Follow.objects.create(follower=request.user, followed=user_to_follow)
-
-    return redirect('account:profile', username=username)
+#     return render(
+#         request,
+#         'Account/student/register.html',
+#         {'form': form})
 
 
-@login_required
-def unfollow(request, username):
-    user_to_unfollow = get_object_or_404(CustomUser, username=username)
+# def teacher_registration(request):
+#     if request.method == 'POST':
+#         form = TeacherRegistrationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return redirect('/account/login/')
+#     else:
+#         form = TeacherRegistrationForm()
 
-    if user_to_unfollow == request.user:
-        redirect('account:profile', username=username)
+#     return render(
+#         request,
+#         'Account/teacher/register.html',
+#         {'form': form})
 
-    Follow.objects.filter(follower=request.user, followed=user_to_unfollow).delete()
-    return redirect('account:profile', username=username)
+
+# @login_required
+# def follow(request, username):
+#     user_to_follow = get_object_or_404(CustomUser, username=username)
+
+#     if user_to_follow == request.user:
+#         redirect('account:profile', username=username)
+
+#     if not Follow.objects.filter(follower=request.user, followed=user_to_follow).exists():
+#         Follow.objects.create(follower=request.user, followed=user_to_follow)
+
+#     return redirect('account:profile', username=username)
+
+
+# @login_required
+# def unfollow(request, username):
+#     user_to_unfollow = get_object_or_404(CustomUser, username=username)
+
+#     if user_to_unfollow == request.user:
+#         redirect('account:profile', username=username)
+
+#     Follow.objects.filter(follower=request.user, followed=user_to_unfollow).delete()
+#     return redirect('account:profile', username=username)

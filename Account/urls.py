@@ -1,21 +1,17 @@
-from django.urls import path
+from django.urls import path,include
+from rest_framework import routers
+from .views import  UserSignInView,TeacherSignUp, StudentSignUp, UserViewSet,StudentViewSet,TeacherViewSet
 
-from . import views
-from .views import CustomLoginView
 
-app_name = 'account'
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'students', StudentViewSet)
+router.register(r'teachers', TeacherViewSet)
 
-urlpatterns = [path(
-    'student-registration/',
-    views.student_registration,
-    name='student_registration'),
-    path(
-        'teacher-registration/',
-        views.teacher_registration,
-        name='teacher_registration'),
-    path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', views.logout_, name='logout'),
-    path('<str:username>/', views.profile, name='profile'),
-    path('follow/<str:username>/', views.follow, name='follow'),
-    path('unfollow/<str:username>/', views.unfollow, name='unfollow'),
+urlpatterns = [
+    
+    path('signup/teacher/', TeacherSignUp.as_view(), name='teacher-signup'),
+    path('signup/student/', StudentSignUp.as_view(), name='student-signup'),
+    path('signin/', UserSignInView.as_view(), name='user-signin'),
+    path('', include(router.urls)),
 ]

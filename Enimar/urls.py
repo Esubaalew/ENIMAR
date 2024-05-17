@@ -23,14 +23,15 @@ from Account import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/',
-         include('Account.urls',
-                 namespace='account')),
+         include('Account.urls'
+            )),
     path(
         'learning/',
         include('Learning.urls',
                 namespace='learning'))
+    
     , path('social/', include('Social.urls', namespace='social')),
-    path("", views.home, name='home'),
+
 
 ]
 
