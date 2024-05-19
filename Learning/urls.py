@@ -1,11 +1,20 @@
 from django.urls import path,include
 from . import views
 from rest_framework import routers
-from .views import CourseDetailView,CourseViewSet
+from .views import CourseDetailView,CourseViewSet,QuizViewSet,QuestionViewSet,ChoiceViewSet,SectionViewSet,SubSectionViewSet,ReadingViewSet,FileViewSet,CourseVideoViewSet,CoursePhotoViewSet
 app_name = 'learning'
 
 router = routers.DefaultRouter()
 router.register(r'courses', CourseViewSet)
+router.register(r'quizzes', QuizViewSet)
+router.register(r'questions', QuestionViewSet)
+router.register(r'choices', ChoiceViewSet)
+router.register(r'sections', SectionViewSet)
+router.register(r'sub-sections', SubSectionViewSet)
+router.register(r'readings', ReadingViewSet)
+router.register(r'files', FileViewSet)
+router.register(r'course-photos', CoursePhotoViewSet)
+router.register(r'course-videos', CourseVideoViewSet)
 
 urlpatterns = [
     path('courses/list', views.course_list, name='course_list'),
