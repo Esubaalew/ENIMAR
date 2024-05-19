@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import CustomUser , Student ,Teacher
+from .models import CustomUser , Student ,Teacher,Follow
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
@@ -66,3 +66,7 @@ class StudentViewSerializer(serializers.ModelSerializer):
         model = Student
         fields = ['id', 'username', 'first_name', 'last_name', 'bio']
         
+class FollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Follow
+        fields = '__all__'

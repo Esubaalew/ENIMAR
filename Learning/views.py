@@ -7,6 +7,13 @@ from .models import Course
 from .forms import CourseCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from rest_framework import generics, permissions, status, viewsets
+from .serializers import CourseSerializer
+
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 def course_list(request):

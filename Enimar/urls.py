@@ -30,7 +30,7 @@ urlpatterns = [
         include('Learning.urls',
                 namespace='learning'))
     
-    , path('social/', include('Social.urls', namespace='social')),
+    , path('social/', include('Social.urls')),
 
 
 ]

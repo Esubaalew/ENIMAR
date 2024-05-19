@@ -12,9 +12,10 @@ from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
-from .serializers import UserSerializer, UserSignInSerializer,StudentSerializer,TeacherSerializer,StudentViewSerializer,TeacherViewSerializer
+from .serializers import UserSerializer, UserSignInSerializer,StudentSerializer,TeacherSerializer,StudentViewSerializer,TeacherViewSerializer,FollowSerializer
 from rest_framework.permissions import AllowAny
-
+from rest_framework.decorators import api_view, action, permission_classes
+from Social.serializers import PostSerializer
 class StudentSignUp(generics.CreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
@@ -69,6 +70,26 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    @action(detail=True, methods=['get'])
+    def followers(self, request, pk=None):
+        user = self.get_object()
+        followers = user.followers.all()
+        serializer = FollowSerializer(followers, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def following(self, request, pk=None):
+        user = self.get_object()
+        following = user.following.all()
+        serializer = FollowSerializer(following, many=True)
+        return Response(serializer.data)
+    @action(detail=True, methods=['get'])
+    def posts(self, request, pk=None):
+        user = self.get_object()
+        posts = user.posts.all()
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+
 
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
