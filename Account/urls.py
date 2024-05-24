@@ -4,9 +4,9 @@ from .views import  UserSignInView,TeacherSignUp, StudentSignUp, UserViewSet,Stu
 
 
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'students', StudentViewSet)
-router.register(r'teachers', TeacherViewSet)
+router.register(r'users', UserViewSet, basename='users')
+router.register(r'students', StudentViewSet, basename='students')
+router.register(r'teachers', TeacherViewSet, basename='teachers')
 
 urlpatterns = [
     

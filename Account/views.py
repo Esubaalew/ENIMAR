@@ -16,6 +16,7 @@ from .serializers import UserSerializer, UserSignInSerializer,StudentSerializer,
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, action, permission_classes
 from Social.serializers import PostSerializer
+# Update signup views to return user data
 class StudentSignUp(generics.CreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
@@ -27,9 +28,10 @@ class StudentSignUp(generics.CreateAPIView):
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
             return Response({
+                'user': serializer.data,  
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
-            })
+            }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TeacherSignUp(generics.CreateAPIView):
@@ -43,11 +45,11 @@ class TeacherSignUp(generics.CreateAPIView):
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
             return Response({
+                'user': serializer.data,  
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
-            })
+            }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 class UserSignInView(generics.CreateAPIView):
     serializer_class = UserSignInSerializer
     permission_classes = [permissions.AllowAny]
@@ -55,13 +57,13 @@ class UserSignInView(generics.CreateAPIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(username=username, password=password)
         if user:
             refresh = RefreshToken.for_user(user)
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
-            }, status=status.HTTP_200_OK)
+            }, status=status.HTTP_200_OK) 
         else:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
