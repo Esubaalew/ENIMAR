@@ -5,16 +5,16 @@ from .views import CourseDetailView,CourseViewSet,QuizViewSet,QuestionViewSet,Ch
 app_name = 'learning'
 
 router = routers.DefaultRouter()
-router.register(r'courses', CourseViewSet)
-router.register(r'quizzes', QuizViewSet)
-router.register(r'questions', QuestionViewSet)
-router.register(r'choices', ChoiceViewSet)
-router.register(r'sections', SectionViewSet)
-router.register(r'sub-sections', SubSectionViewSet)
-router.register(r'readings', ReadingViewSet)
-router.register(r'files', FileViewSet)
-router.register(r'course-photos', CoursePhotoViewSet)
-router.register(r'course-videos', CourseVideoViewSet)
+router.register(r'courses', CourseViewSet, basename='courses')
+router.register(r'quizzes', QuizViewSet, basename='quizzes')
+router.register(r'questions', QuestionViewSet, 'questions')
+router.register(r'choices', ChoiceViewSet, 'choices')
+router.register(r'sections', SectionViewSet, 'sections')
+router.register(r'sub-sections', SubSectionViewSet, 'sub-sections')
+router.register(r'readings', ReadingViewSet, 'readings')
+router.register(r'files', FileViewSet, 'files')
+router.register(r'course-photos', CoursePhotoViewSet, 'course-photos')
+router.register(r'course-videos', CourseVideoViewSet, 'course-videos')
 
 urlpatterns = [
     path('courses/list', views.course_list, name='course_list'),
