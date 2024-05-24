@@ -1,5 +1,6 @@
-#model_tests.py
-'''
+# model_tests.py
+
+"""
 11 tests = passed
 
 ### AddressModelTest:
@@ -47,7 +48,7 @@
     - Purpose: Verifies that when a follower or followed user is deleted, the corresponding Follow instances are also deleted.
     - Expected Result: Follow instances associated with the deleted user should be removed from the database.
     - Test Result: Passed. Follow instances associated with the deleted user are successfully deleted from the database.
-'''
+"""
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
