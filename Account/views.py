@@ -134,3 +134,18 @@ class UserPostListView(generics.ListAPIView):
         username = self.kwargs['username']
         user = get_object_or_404(CustomUser, username=username)
         return Post.objects.filter(author=user)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def logged_in_user(request):
+    user = request.user
+    user_data = {
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+        'first_name': user.first_name,
+        'last_name': user.last_name
+
+    }
+    return Response(user_data)
