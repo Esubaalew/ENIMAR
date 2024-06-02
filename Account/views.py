@@ -124,3 +124,13 @@ class GetUserByUsername(APIView):
             return Response(serializer.data)
         except CustomUser.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class UserPostListView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = get_object_or_404(CustomUser, username=username)
+        return Post.objects.filter(author=user)
