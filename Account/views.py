@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from rest_framework.views import APIView
 
+from Learning.serializers import CourseSerializer
 from .forms import StudentRegistrationForm, TeacherRegistrationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import LoginView, LogoutView
@@ -134,6 +135,16 @@ class UserPostListView(generics.ListAPIView):
         username = self.kwargs['username']
         user = get_object_or_404(CustomUser, username=username)
         return Post.objects.filter(author=user)
+
+
+class TeacherCourseListView(generics.ListAPIView):
+    serializer_class = CourseSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        username = self.kwargs.get('username')
+        teacher = get_object_or_404(Teacher, username=username)
+        return Course.objects.filter(teacher=teacher)
 
 
 @api_view(['GET'])

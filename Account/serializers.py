@@ -1,6 +1,8 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import CustomUser , Student ,Teacher,Follow
+from .models import CustomUser, Student, Teacher, Follow
+
+
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
@@ -11,21 +13,26 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create_user(**validated_data)
         return user
 
+
 class StudentSerializer(CustomUserSerializer):
-    is_student=serializers.BooleanField(default=True)
+    is_student = serializers.BooleanField(default=True)
+
     class Meta(CustomUserSerializer.Meta):
         model = Student
         fields = CustomUserSerializer.Meta.fields + ['is_student']
+
     def create(self, validated_data):
         student = Student.objects.create_user(**validated_data)
         return student
-        
+
+
 class TeacherSerializer(CustomUserSerializer):
-    is_teacher=serializers.BooleanField(default=True)
+    is_teacher = serializers.BooleanField(default=True)
+
     class Meta(CustomUserSerializer.Meta):
         model = Teacher
         fields = CustomUserSerializer.Meta.fields + ['is_teacher']
-    
+
     def create(self, validated_data):
         teacher = Teacher.objects.create_user(**validated_data)
         return teacher
@@ -50,22 +57,25 @@ class UserSignInSerializer(serializers.Serializer):
         data['user'] = user
         return data
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'first_name', 'last_name', 'bio']
+        fields = ['id', 'username', 'first_name', 'last_name', 'bio', 'address', 'position']
 
 
 class TeacherViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
         fields = ['id', 'username', 'first_name', 'last_name', 'bio']
-        
+
+
 class StudentViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ['id', 'username', 'first_name', 'last_name', 'bio']
-        
+
+
 class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow

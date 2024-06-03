@@ -3,57 +3,68 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.urls import reverse
 from django.views.generic import DetailView
 from Account.models import Teacher, Student
-from .models import Course,Quiz,Question,Choice,Section,Subsection,File,Reading,CoursePhoto,CourseVideo
+from .models import Course, Quiz, Question, Choice, Section, Subsection, File, Reading, CoursePhoto, CourseVideo
 from .forms import CourseCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from rest_framework import generics, permissions, status, viewsets
-from .serializers import CourseSerializer,QuizSerializer,QuestionSerializer,SectionSerializer,ChoiceSerializer,FileSerializer,ReadingSerializer,SubSectionSerializer,CoursePhotoSerializer,CourseVideoSerializer
+from .serializers import CourseSerializer, QuizSerializer, QuestionSerializer, SectionSerializer, ChoiceSerializer, \
+    FileSerializer, ReadingSerializer, SubSectionSerializer, CoursePhotoSerializer, CourseVideoSerializer
+
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class QuizViewSet(viewsets.ModelViewSet):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    
+
+
 class ChoiceViewSet(viewsets.ModelViewSet):
     queryset = Choice.objects.all()
     serializer_class = ChoiceSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 class SectionViewSet(viewsets.ModelViewSet):
     queryset = Section.objects.all()
     serializer_class = SectionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class FileViewSet(viewsets.ModelViewSet):
     queryset = File.objects.all()
     serializer_class = FileSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    
+
+
 class ReadingViewSet(viewsets.ModelViewSet):
     queryset = Reading.objects.all()
     serializer_class = ReadingSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 class SubSectionViewSet(viewsets.ModelViewSet):
     queryset = Subsection.objects.all()
     serializer_class = SubSectionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class CourseVideoViewSet(viewsets.ModelViewSet):
     queryset = CourseVideo.objects.all()
     serializer_class = CourseVideoSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 class CoursePhotoViewSet(viewsets.ModelViewSet):
     queryset = CoursePhoto.objects.all()

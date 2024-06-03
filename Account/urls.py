@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 from .views import UserSignInView, TeacherSignUp, StudentSignUp, UserViewSet, StudentViewSet, TeacherViewSet, \
-    GetUserByUsername, UserPostListView, logged_in_user
+    GetUserByUsername, UserPostListView, logged_in_user, TeacherCourseListView
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
@@ -15,6 +15,7 @@ urlpatterns = [
     path('signin/', UserSignInView.as_view(), name='user-signin'),
     path('user/<str:username>/', GetUserByUsername.as_view(), name='get-user-by-username'),
     path('user/<str:username>/posts/', UserPostListView.as_view(), name='user-posts'),
+    path('teacher/<str:username>/courses/', TeacherCourseListView.as_view(), name='teacher-course-list'),
     path('loggedin/', logged_in_user, name='logged-in-user'),
     path('', include(router.urls)),
 ]
