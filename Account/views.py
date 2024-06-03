@@ -1,10 +1,5 @@
-from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 from rest_framework.views import APIView
-
 from Learning.serializers import CourseSerializer
-from .forms import StudentRegistrationForm, TeacherRegistrationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import LoginView, LogoutView
 from .models import CustomUser, Teacher, Student, Follow

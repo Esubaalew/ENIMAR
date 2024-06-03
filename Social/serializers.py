@@ -11,6 +11,7 @@ class PostSerializer(serializers.ModelSerializer):
             'id', 'title', 'slug', 'text', 'course', 'author', 'video',
             'photos', 'likes', 'created', 'updated', 'total_likes'
         ]
+        read_only_fields = ['author', 'slug']
 
     def get_total_likes(self, obj):
         return obj.total_likes()

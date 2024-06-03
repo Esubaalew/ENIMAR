@@ -61,7 +61,7 @@ class UserSignInSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'first_name', 'last_name', 'bio', 'address', 'position']
+        fields = ['id', 'username', 'first_name', 'last_name', 'bio', 'address', 'position', 'is_teacher']
 
 
 class TeacherViewSerializer(serializers.ModelSerializer):
