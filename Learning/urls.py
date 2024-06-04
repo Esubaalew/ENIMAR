@@ -1,13 +1,14 @@
-from django.urls import path,include
+from django.urls import path, include
 from rest_framework import routers
-from .views import ( 
-CourseViewSet,QuizViewSet,
-QuestionViewSet,ChoiceViewSet,
-SectionViewSet,SubSectionViewSet,
-ReadingViewSet,FileViewSet,
-CourseVideoViewSet,
-CoursePhotoViewSet
+from .views import (
+    CourseViewSet, QuizViewSet,
+    QuestionViewSet, ChoiceViewSet,
+    SectionViewSet, SubSectionViewSet,
+    ReadingViewSet, FileViewSet,
+    CourseVideoViewSet,
+    CoursePhotoViewSet
 )
+
 app_name = 'learning'
 
 router = routers.DefaultRouter()
@@ -30,5 +31,5 @@ urlpatterns = [
     # path('payment/check/<int:pk>', views.payment, name='check'),
     # path('course/attend/<int:pk>', views.attend, name='attend'),
     path('', include(router.urls)),
-    
+
 ]

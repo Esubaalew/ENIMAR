@@ -151,7 +151,7 @@ def logged_in_user(request):
         'username': user.username,
         'email': user.email,
         'first_name': user.first_name,
-        'last_name': user.last_name
+        'last_name': user.last_name,
 
     }
     return Response(user_data)
