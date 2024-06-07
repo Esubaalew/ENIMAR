@@ -11,9 +11,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
-
         if self.request.user.is_teacher:
-
             teacher_instance = Teacher.objects.get(id=self.request.user.id)
             serializer.save(teacher=teacher_instance)
         else:
