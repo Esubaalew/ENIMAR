@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'payments.apps.PaymentsConfig',
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
+
+CHAPA_SECRET_KEY = 'CHASECK_TEST-RsHZOu44O8SHUc1yag4rS9ntg3xJYw5X'

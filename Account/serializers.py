@@ -6,7 +6,7 @@ from .models import CustomUser, Student, Teacher, Follow
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'password', 'first_name', 'last_name', 'phone_number']
+        fields = ['id', 'username', 'password', 'first_name', 'last_name', 'phone_number', 'email']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -61,7 +61,7 @@ class UserSignInSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'first_name', 'last_name', 'bio', 'address', 'position', 'is_teacher']
+        fields = ['id', 'username', 'first_name', 'last_name', 'bio', 'address', 'position', 'is_teacher','email']
 
 
 class TeacherViewSerializer(serializers.ModelSerializer):

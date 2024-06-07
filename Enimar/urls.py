@@ -31,6 +31,7 @@ urlpatterns = [
                 namespace='learning'))
     
     , path('social/', include('Social.urls')),
+    path('payments/', include('payments.urls')),
 
 
 ]
