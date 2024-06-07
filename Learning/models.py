@@ -1,9 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-
 from Account.models import Teacher, Student
 from django.urls import reverse
-from django.utils import timezone
 
 
 class Course(models.Model):
