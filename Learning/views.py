@@ -76,6 +76,34 @@ class SubSectionViewSet(viewsets.ModelViewSet):
     serializer_class = SubSectionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    @action(detail=True, methods=['get'])
+    def readings(self, request, pk=None):
+        subsection = self.get_object()
+        readings = subsection.readings.all()
+        serializer = ReadingSerializer(readings, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def files(self, request, pk=None):
+        subsection = self.get_object()
+        files = subsection.files.all()
+        serializer = FileSerializer(files, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def photos(self, request, pk=None):
+        subsection = self.get_object()
+        photos = subsection.photos.all()
+        serializer = CoursePhotoSerializer(photos, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def videos(self, request, pk=None):
+        subsection = self.get_object()
+        videos = subsection.videos.all()
+        serializer = CourseVideoSerializer(videos, many=True)
+        return Response(serializer.data)
+
 
 class CourseVideoViewSet(viewsets.ModelViewSet):
     queryset = CourseVideo.objects.all()
