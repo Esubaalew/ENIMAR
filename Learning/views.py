@@ -1,13 +1,6 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect, reverse
-from django.urls import reverse
-from django.views.generic import DetailView
-from Account.models import Teacher, Student
+from Account.models import Teacher
 from .models import Course, Quiz, Question, Choice, Section, Subsection, File, Reading, CoursePhoto, CourseVideo
-from .forms import CourseCreationForm
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from rest_framework import generics, permissions, status, viewsets
+from rest_framework import permissions, viewsets
 from .serializers import CourseSerializer, QuizSerializer, QuestionSerializer, SectionSerializer, ChoiceSerializer, \
     FileSerializer, ReadingSerializer, SubSectionSerializer, CoursePhotoSerializer, CourseVideoSerializer
 
@@ -16,6 +9,15 @@ class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+
+        if self.request.user.is_teacher:
+
+            teacher_instance = Teacher.objects.get(id=self.request.user.id)
+            serializer.save(teacher=teacher_instance)
+        else:
+            raise ValueError("Only teachers can create courses.")
 
 
 class QuizViewSet(viewsets.ModelViewSet):
