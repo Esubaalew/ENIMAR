@@ -28,7 +28,7 @@ class PaymentInitializeView(generics.GenericAPIView):
             result = chapa.initialize(
                 amount=amount,
                 tx_ref=tx_ref,
-                callback_url='http://localhost:8000/payments/callback/',
+                callback_url='http://localhost:8000/payments/callback/?tx_ref=tx_ref',
                 first_name=request.user.first_name,
                 last_name=request.user.last_name,
                 email=request.user.email,
