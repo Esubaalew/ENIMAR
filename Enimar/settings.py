@@ -150,3 +150,4 @@ REST_FRAMEWORK = {
 }
 
 CHAPA_SECRET_KEY = 'CHASECK_TEST-RsHZOu44O8SHUc1yag4rS9ntg3xJYw5X'
+CHAPA_VERIFY_ENDPOINT = 'https://api.chapa.co/v1/transaction/verify'
