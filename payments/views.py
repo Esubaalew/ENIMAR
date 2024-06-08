@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from chapa import Chapa
+
+from Learning.models import Course
 from .models import Payment
 from .serializers import PaymentSerializer
 import uuid
@@ -16,23 +18,26 @@ class PaymentInitializeView(generics.GenericAPIView):
     def post(self, request):
         try:
             amount = request.data.get('amount')
+            course_id = request.data.get('course')  # Get course ID from the request
+            course = None
+            if course_id:
+                course = Course.objects.get(id=course_id)
+
             chapa = Chapa(settings.CHAPA_SECRET_KEY)
             tx_ref = str(uuid.uuid4())
             result = chapa.initialize(
                 amount=amount,
                 tx_ref=tx_ref,
-                callback_url='http://localhost:8000/payments/payment/callback/',
-                return_url=f'http://localhost:8000/payments/payment/result/?tx_ref={tx_ref}',
+                callback_url='http://localhost:8000/payments/callback/',
                 first_name=request.user.first_name,
                 last_name=request.user.last_name,
                 email=request.user.email,
             )
 
-            print(result)
-
             if result['status'] == 'success':
                 Payment.objects.create(
                     user=request.user,
+                    course=course,
                     chapa_tx_ref=tx_ref,
                     amount=amount,
                     status='pending'
@@ -43,6 +48,10 @@ class PaymentInitializeView(generics.GenericAPIView):
             return Response({
                 'error': 'Payment initialization failed'
             }, status=status.HTTP_400_BAD_REQUEST)
+        except Course.DoesNotExist:
+            return Response({
+                'error': 'Course not found'
+            }, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({
                 'error': 'An unexpected error occurred'
