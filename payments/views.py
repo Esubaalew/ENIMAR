@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from chapa import Chapa
-
 from Learning.models import Course
 from .models import Payment
 from .serializers import PaymentSerializer
@@ -18,10 +17,15 @@ class PaymentInitializeView(generics.GenericAPIView):
     def post(self, request):
         try:
             amount = request.data.get('amount')
-            course_id = request.data.get('course')  # Get course ID from the request
+            course_id = request.data.get('course')
             course = None
             if course_id:
                 course = Course.objects.get(id=course_id)
+
+            if course and Payment.objects.filter(user=request.user, course=course).exists():
+                return Response({
+                    'error': 'You have already made a payment for this course.'
+                }, status=status.HTTP_400_BAD_REQUEST)
 
             chapa = Chapa(settings.CHAPA_SECRET_KEY)
             tx_ref = str(uuid.uuid4())

@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from Learning.serializers import CourseSerializer
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import LoginView, LogoutView
+
+from payments.models import Payment
 from .models import CustomUser, Teacher, Student, Follow
 from Learning.models import Course
 from Social.models import Post, Comment, Photo, Video
@@ -156,3 +158,17 @@ def logged_in_user(request):
 
     }
     return Response(user_data)
+
+
+class CoursesEnrolledByUserView(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    def get(self, request, user_id):
+        try:
+            user = CustomUser.objects.get(id=user_id)
+
+            payments = Payment.objects.filter(user=user).select_related('course')
+            courses = [payment.course for payment in payments if payment.course]
+            serializer = CourseSerializer(courses, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
