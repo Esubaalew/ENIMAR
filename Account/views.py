@@ -162,6 +162,7 @@ def logged_in_user(request):
 
 class CoursesEnrolledByUserView(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     def get(self, request, user_id):
         try:
             user = CustomUser.objects.get(id=user_id)

@@ -17,6 +17,6 @@ urlpatterns = [
     path('user/<str:username>/posts/', UserPostListView.as_view(), name='user-posts'),
     path('teacher/<str:username>/courses/', TeacherCourseListView.as_view(), name='teacher-course-list'),
     path('loggedin/', logged_in_user, name='logged-in-user'),
-    path('courses/enrolled/<int:user_id>/', CoursesEnrolledByUserView.as_view(), name='courses-enrolled-by-user'),
+    path('student/<int:user_id>/courses/', CoursesEnrolledByUserView.as_view(), name='courses-enrolled-by-user'),
     path('', include(router.urls)),
 ]
