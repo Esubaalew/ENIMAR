@@ -38,6 +38,18 @@ class TeacherSerializer(CustomUserSerializer):
         return teacher
 
 
+class AccountantSerializer(CustomUserSerializer):
+    is_accountant = serializers.BooleanField(default=True)
+
+    class Meta(CustomUserSerializer.Meta):
+        model = CustomUser
+        fields = CustomUserSerializer.Meta.fields + ['is_accountant']
+
+    def create(self, validated_data):
+        accountant = CustomUser.objects.create_user(**validated_data)
+        return accountant
+
+
 class UserSignInSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
@@ -61,7 +73,7 @@ class UserSignInSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'first_name', 'last_name', 'bio', 'address', 'position', 'is_teacher','email']
+        fields = ['id', 'username', 'first_name', 'last_name', 'bio', 'address', 'position', 'is_teacher', 'email']
 
 
 class TeacherViewSerializer(serializers.ModelSerializer):

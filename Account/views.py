@@ -1,8 +1,6 @@
 from rest_framework.views import APIView
 from Learning.serializers import CourseSerializer
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.views import LoginView, LogoutView
-
 from payments.models import Payment
 from .models import CustomUser, Teacher, Student, Follow
 from Learning.models import Course
@@ -12,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer, UserSignInSerializer, StudentSerializer, TeacherSerializer, \
-    StudentViewSerializer, TeacherViewSerializer, FollowSerializer
+    StudentViewSerializer, TeacherViewSerializer, FollowSerializer, AccountantSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, action, permission_classes
 from Social.serializers import PostSerializer
@@ -109,6 +107,12 @@ class StudentViewSet(viewsets.ModelViewSet):
 class TeacherViewSet(viewsets.ModelViewSet):
     queryset = Teacher.objects.all()
     serializer_class = TeacherViewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class AccountantViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.filter(is_accountant=True)
+    serializer_class = AccountantSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 

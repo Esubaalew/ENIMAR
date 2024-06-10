@@ -28,6 +28,7 @@ class CustomUser(AbstractUser):
     address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
+    is_accountant = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -46,6 +47,11 @@ class Student(CustomUser):
 class Teacher(CustomUser):
     class Meta:
         verbose_name = "Teacher"
+
+
+class Accountant(CustomUser):
+    class Meta:
+        verbose_name = "Accountant"
 
 
 class Follow(models.Model):
