@@ -1,9 +1,11 @@
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from Account.models import Teacher
+from Account.models import Teacher, CustomUser
+from Account.serializers import UserSerializer
+from payments.models import Payment
 from .models import Course, Quiz, Question, Choice, Section, Subsection, File, Reading, CoursePhoto, CourseVideo
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, generics, status
 from .serializers import CourseSerializer, QuizSerializer, QuestionSerializer, SectionSerializer, ChoiceSerializer, \
     FileSerializer, ReadingSerializer, SubSectionSerializer, CoursePhotoSerializer, CourseVideoSerializer
 
@@ -115,3 +117,19 @@ class CoursePhotoViewSet(viewsets.ModelViewSet):
     queryset = CoursePhoto.objects.all()
     serializer_class = CoursePhotoSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class StudentsWhoPaidForCourseView(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        course_id = self.kwargs['course_id']  # status = 'completed'
+        payments = Payment.objects.filter(course_id=course_id)
+        user_ids = payments.values_list('user_id', flat=True)
+        return CustomUser.objects.filter(id__in=user_ids)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
