@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import CustomUser, Student, Address, Teacher
+from .models import CustomUser, Student, Address, Teacher, Accountant
 
 
 @admin.register(Address)
@@ -34,5 +34,11 @@ class StudentAdmin(admin.ModelAdmin):
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
+    list_display = ['username', 'first_name', 'last_name', 'email', 'phone_number', ]
+    search_fields = ('username', 'first_name', 'last_name',)
+
+
+@admin.register(Accountant)
+class AccountantAdmin(admin.ModelAdmin):
     list_display = ['username', 'first_name', 'last_name', 'email', 'phone_number', ]
     search_fields = ('username', 'first_name', 'last_name',)
