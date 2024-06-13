@@ -1,10 +1,10 @@
 from rest_framework.views import APIView
 from Learning.serializers import CourseSerializer
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 from payments.models import Payment
-from .models import CustomUser, Teacher, Student, Follow
+from .models import CustomUser, Teacher, Student
 from Learning.models import Course
-from Social.models import Post, Comment, Photo, Video
+from Social.models import Post
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -159,6 +159,7 @@ def logged_in_user(request):
         'first_name': user.first_name,
         'last_name': user.last_name,
         'is_teacher': user.is_teacher,
+        'is_student': user.is_student,
 
     }
     return Response(user_data)

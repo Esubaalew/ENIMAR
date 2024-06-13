@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'payments.apps.PaymentsConfig',
+    'chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
