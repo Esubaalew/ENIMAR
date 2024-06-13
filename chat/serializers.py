@@ -1,4 +1,3 @@
-from django.db.models import Q
 from rest_framework import serializers
 from Account.serializers import UserSerializer
 from .models import Group, Message
