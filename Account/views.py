@@ -5,7 +5,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.html import strip_tags
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from rest_framework.views import APIView
 from Learning.serializers import CourseSerializer
 from django.shortcuts import get_object_or_404
@@ -18,7 +18,8 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer, UserSignInSerializer, StudentSerializer, TeacherSerializer, \
-    StudentViewSerializer, TeacherViewSerializer, FollowSerializer, AccountantSerializer, PasswordResetRequestSerializer
+    StudentViewSerializer, TeacherViewSerializer, FollowSerializer, AccountantSerializer, \
+    PasswordResetRequestSerializer, PasswordResetConfirmSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, action, permission_classes
 from Social.serializers import PostSerializer
@@ -48,7 +49,7 @@ class PasswordResetRequestAPIView(APIView):
         if user:
             token = password_reset_token_generator.make_token(user)
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            reset_link = f"{settings.FRONTEND_URL}/password-reset-confirm/{uidb64}/{token}/"
+            reset_link = f"{settings.FRONTEND_URL}password-reset-confirm/{uidb64}/{token}/"
 
             # Render HTML email template
             html_content = render_to_string('password_reset_email.html', {'reset_link': reset_link})

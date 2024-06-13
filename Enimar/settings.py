@@ -167,4 +167,4 @@ EMAIL_HOST_PASSWORD = 'uyvf eyov orqa yrcv'
 
 # frontend url
 
-FRONTEND_URL = 'http://127.0.0.1:8000/'
+FRONTEND_URL = 'http://127.0.0.1:3000/'
