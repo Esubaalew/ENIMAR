@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -155,7 +156,6 @@ REST_FRAMEWORK = {
 CHAPA_SECRET_KEY = 'CHASECK_TEST-RsHZOu44O8SHUc1yag4rS9ntg3xJYw5X'
 CHAPA_VERIFY_ENDPOINT = 'https://api.chapa.co/v1/transaction/verify'
 
-
 # Email settings
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -164,3 +164,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'esubalewchekol6@gmail.com'
 EMAIL_HOST_PASSWORD = 'uyvf eyov orqa yrcv'
+
+# frontend url
+
+FRONTEND_URL = 'http://127.0.0.1:8000/'

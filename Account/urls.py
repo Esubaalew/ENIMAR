@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from .views import UserSignInView, TeacherSignUp, StudentSignUp, UserViewSet, StudentViewSet, TeacherViewSet, \
     GetUserByUsername, UserPostListView, logged_in_user, TeacherCourseListView, CoursesEnrolledByUserView, \
-    AccountantViewSet
+    AccountantViewSet, PasswordResetRequestAPIView, PasswordResetConfirmAPIView
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
@@ -20,5 +20,8 @@ urlpatterns = [
     path('teacher/<str:username>/courses/', TeacherCourseListView.as_view(), name='teacher-course-list'),
     path('loggedin/', logged_in_user, name='logged-in-user'),
     path('student/<int:user_id>/courses/', CoursesEnrolledByUserView.as_view(), name='courses-enrolled-by-user'),
+    path('password-reset/', PasswordResetRequestAPIView.as_view(), name='password_reset_request'),
+    path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmAPIView.as_view(),
+         name='password_reset_confirm'),
     path('', include(router.urls)),
 ]

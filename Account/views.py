@@ -1,3 +1,11 @@
+import six
+from django.conf import settings
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.html import strip_tags
+from django.utils.http import urlsafe_base64_encode
 from rest_framework.views import APIView
 from Learning.serializers import CourseSerializer
 from django.shortcuts import get_object_or_404
@@ -10,10 +18,86 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer, UserSignInSerializer, StudentSerializer, TeacherSerializer, \
-    StudentViewSerializer, TeacherViewSerializer, FollowSerializer, AccountantSerializer
+    StudentViewSerializer, TeacherViewSerializer, FollowSerializer, AccountantSerializer, PasswordResetRequestSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, action, permission_classes
 from Social.serializers import PostSerializer
+
+
+class MyTokenGenerator(PasswordResetTokenGenerator):
+    def _make_hash_value(self, user, timestamp):
+        return (
+                six.text_type(user.pk) + six.text_type(timestamp) +
+                six.text_type(user.is_active)
+        )
+
+
+password_reset_token_generator = MyTokenGenerator()
+
+
+class PasswordResetRequestAPIView(APIView):
+    serializer_class = PasswordResetRequestSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        email = request.data.get('email')
+        user = CustomUser.objects.filter(email=email).first()
+        if user:
+            token = password_reset_token_generator.make_token(user)
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            reset_link = f"{settings.FRONTEND_URL}/password-reset-confirm/{uidb64}/{token}/"
+
+            # Render HTML email template
+            html_content = render_to_string('password_reset_email.html', {'reset_link': reset_link})
+            text_content = strip_tags(html_content)
+
+            # Send email
+            subject = 'Password Reset'
+            from_email = settings.EMAIL_HOST_USER
+            to_email = [email]
+
+            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+            msg.attach_alternative(html_content, "text/html")
+            msg.send(fail_silently=False)
+
+            return Response({'message': 'Password reset link has been sent to your email.'}, status=status.HTTP_200_OK)
+        return Response({'error': 'User with this email does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class PasswordResetConfirmAPIView(APIView):
+    serializer_class = PasswordResetConfirmSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, uidb64, token):
+        serializer = self.serializer_class(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Decode the uidb64 to get user ID
+            try:
+                user_id = urlsafe_base64_decode(uidb64).decode()
+            except (TypeError, ValueError, OverflowError):
+                user_id = None
+
+            if user_id is not None:
+                user = CustomUser.objects.filter(pk=user_id).first()
+
+                # Validate the token
+                if user and password_reset_token_generator.check_token(user, token):
+                    new_password = serializer.validated_data.get('new_password')
+                    user.set_password(new_password)
+                    user.save()
+                    return Response({'message': 'Password reset successful.'}, status=status.HTTP_200_OK)
+                else:
+                    return Response({'error': 'Invalid or expired token.'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({'error': 'Invalid user ID.'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Update signup views to return user data
