@@ -169,7 +169,7 @@ EMAIL_HOST_PASSWORD = 'uyvf eyov orqa yrcv'
 
 FRONTEND_URL = 'http://127.0.0.1:3000/'
 
-JWT login session
+# JWT login session
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
