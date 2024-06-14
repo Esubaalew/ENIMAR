@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from Learning.serializers import CourseSerializer
 from django.shortcuts import get_object_or_404
 from payments.models import Payment
-from .models import CustomUser, Teacher, Student
+from .models import CustomUser, Teacher, Student, Address
 from Learning.models import Course
 from Social.models import Post
 from rest_framework import generics, permissions, status, viewsets
@@ -19,7 +19,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer, UserSignInSerializer, StudentSerializer, TeacherSerializer, \
     StudentViewSerializer, TeacherViewSerializer, FollowSerializer, AccountantSerializer, \
-    PasswordResetRequestSerializer, PasswordResetConfirmSerializer
+    PasswordResetRequestSerializer, PasswordResetConfirmSerializer, AddressSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, action, permission_classes
 from Social.serializers import PostSerializer
@@ -263,3 +263,9 @@ class CoursesEnrolledByUserView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except CustomUser.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class AddressViewSet(viewsets.ModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]

@@ -9,6 +9,7 @@ router.register(r'users', UserViewSet, basename='users')
 router.register(r'students', StudentViewSet, basename='students')
 router.register(r'teachers', TeacherViewSet, basename='teachers')
 router.register(r'accountants', AccountantViewSet, basename='accountants')
+router.register(r'address', UserViewSet, basename='address')
 
 urlpatterns = [
 

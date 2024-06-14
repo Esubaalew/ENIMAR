@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import CustomUser, Student, Teacher, Follow
+from .models import CustomUser, Student, Teacher, Follow, Address
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -101,3 +101,9 @@ class PasswordResetRequestSerializer(serializers.Serializer):
 
 class PasswordResetConfirmSerializer(serializers.Serializer):
     new_password = serializers.CharField(min_length=8)
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = '__all__'
