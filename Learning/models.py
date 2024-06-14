@@ -82,7 +82,7 @@ class Subsection(models.Model):
 
 class Reading(models.Model):
     title = models.CharField(max_length=200)
-    content = models.TextField(max_length=500)
+    content = models.TextField()
     subsection = models.ForeignKey(Subsection, on_delete=models.CASCADE, related_name='readings', default=None)
 
     def __str__(self):
