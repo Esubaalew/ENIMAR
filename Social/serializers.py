@@ -3,8 +3,6 @@ from .models import Post, Comment, Message, Share, Photo, Video, Like
 
 
 class PostSerializer(serializers.ModelSerializer):
-    total_likes = serializers.SerializerMethodField()
-
     class Meta:
         model = Post
         fields = [
