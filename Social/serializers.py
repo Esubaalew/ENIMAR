@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Comment, Message, Share, Photo, Video
+from .models import Post, Comment, Message, Share, Photo, Video, Like
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -9,12 +9,9 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = [
             'id', 'title', 'slug', 'text', 'course', 'author', 'video',
-            'photos', 'likes', 'created', 'updated', 'total_likes'
+            'photos', 'created', 'updated'
         ]
         read_only_fields = ['author', 'slug']
-
-    def get_total_likes(self, obj):
-        return obj.total_likes()
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -46,3 +43,10 @@ class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = '__all__'
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = '__all__'
+        read_only_fields = ['user']

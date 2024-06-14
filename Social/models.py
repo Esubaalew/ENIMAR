@@ -19,7 +19,6 @@ class Post(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='posts')
     video = models.OneToOneField(Video, on_delete=models.CASCADE, null=True, blank=True)
     photos = models.ManyToManyField(Photo, related_name='posts', blank=True)
-    likes = models.ManyToManyField(CustomUser, related_name='liked_posts', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -48,6 +47,18 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.user.username} on {self.post.title}'
+
+
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='liked_posts')
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('post', 'user')
+
+    def __str__(self):
+        return f'{self.user} liked {self.post}'
 
 
 class Message(models.Model):
