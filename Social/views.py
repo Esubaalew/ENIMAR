@@ -3,6 +3,9 @@ from django.db.models import Q, Max
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.text import slugify
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 from Account.models import CustomUser
 from .forms import PostCreationForm, CommentForm
 from .models import Post, Comment, Photo, Video, Message, Share
@@ -23,6 +26,12 @@ class PostViewSet(viewsets.ModelViewSet):
         slug = slugify(title)
         serializer.save(author=self.request.user, slug=slug)
 
+    @action(detail=True, methods=['get'])
+    def comments(self, request, pk=None):
+        post = self.get_object()
+        comments = Comment.objects.filter(post=post)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()

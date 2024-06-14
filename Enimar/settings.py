@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list.html of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 import os
 
@@ -168,3 +168,10 @@ EMAIL_HOST_PASSWORD = 'uyvf eyov orqa yrcv'
 # frontend url
 
 FRONTEND_URL = 'http://127.0.0.1:3000/'
+
+
+# JWT login session
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
+}
