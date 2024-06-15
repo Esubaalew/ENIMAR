@@ -1,15 +1,13 @@
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
 from Account.models import Teacher, CustomUser
 from Account.serializers import UserSerializer
 from payments.models import Payment
-from .models import Course, Quiz, Question, Choice, Section, Subsection, File, Reading, CoursePhoto, CourseVideo
+from .models import Course, Quiz, Question, Choice, Section, Subsection, File, Reading, CoursePhoto, CourseVideo, \
+    SubsectionCompletion
 from rest_framework import permissions, viewsets, generics, status
 from .serializers import CourseSerializer, QuizSerializer, QuestionSerializer, SectionSerializer, ChoiceSerializer, \
-    FileSerializer, ReadingSerializer, SubSectionSerializer, CoursePhotoSerializer, CourseVideoSerializer
-
-
+    FileSerializer, ReadingSerializer, SubSectionSerializer, CoursePhotoSerializer, CourseVideoSerializer, SubsectionCompletionSerializer
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -133,3 +131,12 @@ class StudentsWhoPaidForCourseView(generics.ListAPIView):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SubsectionCompletionViewSet(viewsets.ModelViewSet):
+    queryset = SubsectionCompletion.objects.all()
+    serializer_class = SubsectionCompletionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

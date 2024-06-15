@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Course, Question, Quiz, Section, Choice, Subsection, File, Reading, CourseVideo, CoursePhoto
+from .models import Course, Question, Quiz, Section, Choice, Subsection, File, Reading, CourseVideo, CoursePhoto, \
+    SubsectionCompletion
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -68,3 +69,13 @@ class CourseVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseVideo
         fields = '__all__'
+
+
+class SubsectionCompletionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubsectionCompletion
+        fields = '__all__'
+        read_only_fields = ['user', 'subsection']
+        extra_kwargs = {
+            'completed': {'write_only': True}
+        }

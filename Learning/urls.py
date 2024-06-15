@@ -6,7 +6,7 @@ from .views import (
     SectionViewSet, SubSectionViewSet,
     ReadingViewSet, FileViewSet,
     CourseVideoViewSet,
-    CoursePhotoViewSet, StudentsWhoPaidForCourseView
+    CoursePhotoViewSet, StudentsWhoPaidForCourseView, SubsectionCompletionViewSet
 )
 
 app_name = 'learning'
@@ -22,6 +22,7 @@ router.register(r'readings', ReadingViewSet, 'readings')
 router.register(r'files', FileViewSet, 'files')
 router.register(r'course-photos', CoursePhotoViewSet, 'course-photos')
 router.register(r'course-videos', CourseVideoViewSet, 'course-videos')
+router.register(r'subsection-completions', SubsectionCompletionViewSet, 'subsection-completions')
 
 urlpatterns = [
     path('', include(router.urls)),

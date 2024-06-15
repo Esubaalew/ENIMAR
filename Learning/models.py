@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from Account.models import Teacher, Student
+from Account.models import Teacher, Student, CustomUser
 from django.urls import reverse
 
 
@@ -107,3 +107,16 @@ class CoursePhoto(models.Model):
 class CourseVideo(models.Model):
     video_file = models.FileField(upload_to='learning/course/videos/')
     subsection = models.ForeignKey(Subsection, on_delete=models.CASCADE, related_name='videos', default=None)
+
+
+class SubsectionCompletion(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='subsection_completions')
+    subsection = models.ForeignKey(Subsection, on_delete=models.CASCADE, related_name='completions')
+    completed = models.BooleanField(default=False)
+    completed_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['user', 'subsection']
+
+    def __str__(self):
+        return f'{self.user.username} completed {self.subsection.name}'
