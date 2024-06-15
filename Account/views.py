@@ -23,6 +23,10 @@ from .serializers import UserSerializer, UserSignInSerializer, StudentSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, action, permission_classes
 from Social.serializers import PostSerializer
+from rest_framework import generics
+from .models import Notification
+from .serializers import NotificationSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 class MyTokenGenerator(PasswordResetTokenGenerator):
@@ -268,4 +272,10 @@ class CoursesEnrolledByUserView(APIView):
 class AddressViewSet(viewsets.ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
