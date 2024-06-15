@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from Account.models import Teacher, CustomUser
@@ -143,3 +144,20 @@ class SubsectionCompletionViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class UserCourseSubsectionCompletionView(generics.ListAPIView):
+    serializer_class = SubsectionCompletionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        course_id = self.kwargs['course_id']
+        course = get_object_or_404(Course, id=course_id)
+        subsections = Subsection.objects.filter(section__course=course)
+        return SubsectionCompletion.objects.filter(user=user, subsection__in=subsections, completed=True)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

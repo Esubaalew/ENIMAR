@@ -6,7 +6,7 @@ from .views import (
     SectionViewSet, SubSectionViewSet,
     ReadingViewSet, FileViewSet,
     CourseVideoViewSet,
-    CoursePhotoViewSet, StudentsWhoPaidForCourseView, SubsectionCompletionViewSet
+    CoursePhotoViewSet, StudentsWhoPaidForCourseView, SubsectionCompletionViewSet, UserCourseSubsectionCompletionView
 )
 
 app_name = 'learning'
@@ -27,4 +27,6 @@ router.register(r'subsection-completions', SubsectionCompletionViewSet, 'subsect
 urlpatterns = [
     path('', include(router.urls)),
     path('course/<int:course_id>/students/', StudentsWhoPaidForCourseView.as_view(), name='students-who-enrolled'),
+    path('courses/<int:course_id>/completed-subsections/', UserCourseSubsectionCompletionView.as_view(),
+         name='user-course-completed-subsections'),
 ]
