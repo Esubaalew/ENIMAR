@@ -111,6 +111,13 @@ class SubSectionViewSet(viewsets.ModelViewSet):
         serializer = CourseVideoSerializer(videos, many=True)
         return Response(serializer.data)
 
+    @action(detail=True, methods=['get'])
+    def quizzes(self, request, pk=None):
+        subsection = self.get_object()
+        quizzes = subsection.quizzes.all()
+        serializer = QuizSerializer(quizzes, many=True)
+        return Response(serializer.data)
+
 
 class CourseVideoViewSet(viewsets.ModelViewSet):
     queryset = CourseVideo.objects.all()
