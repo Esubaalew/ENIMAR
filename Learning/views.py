@@ -7,7 +7,10 @@ from .models import Course, Quiz, Question, Choice, Section, Subsection, File, R
     SubsectionCompletion
 from rest_framework import permissions, viewsets, generics, status
 from .serializers import CourseSerializer, QuizSerializer, QuestionSerializer, SectionSerializer, ChoiceSerializer, \
-    FileSerializer, ReadingSerializer, SubSectionSerializer, CoursePhotoSerializer, CourseVideoSerializer, SubsectionCompletionSerializer
+    FileSerializer, ReadingSerializer, SubSectionSerializer, CoursePhotoSerializer, CourseVideoSerializer, \
+    SubsectionCompletionSerializer
+
+
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer

@@ -8,7 +8,7 @@ from .models import (
     Reading,
     File,
     CoursePhoto,
-    CourseVideo, Subsection, Section
+    CourseVideo, Subsection, Section, SubsectionCompletion
 )
 
 
@@ -91,3 +91,8 @@ class SectionAdmin(admin.ModelAdmin):
 @admin.register(Subsection)
 class SubsectionAdmin(admin.ModelAdmin):
     list_display = ('name', 'section')
+
+
+@admin.register(SubsectionCompletion)
+class SubsectionCompletionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'subsection', 'completed_date')

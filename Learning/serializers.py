@@ -72,10 +72,12 @@ class CourseVideoSerializer(serializers.ModelSerializer):
 
 
 class SubsectionCompletionSerializer(serializers.ModelSerializer):
+    subsection = serializers.PrimaryKeyRelatedField(queryset=Subsection.objects.all())
+
     class Meta:
         model = SubsectionCompletion
         fields = '__all__'
-        read_only_fields = ['user', 'subsection']
+        read_only_fields = ['user', 'completed_date']
         extra_kwargs = {
             'completed': {'write_only': True}
         }
