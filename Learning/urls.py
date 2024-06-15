@@ -6,7 +6,8 @@ from .views import (
     SectionViewSet, SubSectionViewSet,
     ReadingViewSet, FileViewSet,
     CourseVideoViewSet,
-    CoursePhotoViewSet, StudentsWhoPaidForCourseView, SubsectionCompletionViewSet, UserCourseSubsectionCompletionView
+    CoursePhotoViewSet, StudentsWhoPaidForCourseView, SubsectionCompletionViewSet,
+    UserCourseSubsectionCompletionView, CertificateViewSet
 )
 
 app_name = 'learning'
@@ -23,7 +24,7 @@ router.register(r'files', FileViewSet, 'files')
 router.register(r'course-photos', CoursePhotoViewSet, 'course-photos')
 router.register(r'course-videos', CourseVideoViewSet, 'course-videos')
 router.register(r'subsection-completions', SubsectionCompletionViewSet, 'subsection-completions')
-
+router.register(r'certificates', CertificateViewSet, 'certificates')
 urlpatterns = [
     path('', include(router.urls)),
     path('course/<int:course_id>/students/', StudentsWhoPaidForCourseView.as_view(), name='students-who-enrolled'),

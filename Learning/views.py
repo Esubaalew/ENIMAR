@@ -1,15 +1,18 @@
+from io import BytesIO
 from django.shortcuts import get_object_or_404
+from reportlab.pdfgen import canvas
 from rest_framework.decorators import action
+from django.core.files.base import ContentFile
 from rest_framework.response import Response
 from Account.models import Teacher, CustomUser
 from Account.serializers import UserSerializer
 from payments.models import Payment
 from .models import Course, Quiz, Question, Choice, Section, Subsection, File, Reading, CoursePhoto, CourseVideo, \
-    SubsectionCompletion
+    SubsectionCompletion, Certificate
 from rest_framework import permissions, viewsets, generics, status
 from .serializers import CourseSerializer, QuizSerializer, QuestionSerializer, SectionSerializer, ChoiceSerializer, \
     FileSerializer, ReadingSerializer, SubSectionSerializer, CoursePhotoSerializer, CourseVideoSerializer, \
-    SubsectionCompletionSerializer
+    SubsectionCompletionSerializer, CertificateSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -161,3 +164,55 @@ class UserCourseSubsectionCompletionView(generics.ListAPIView):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class CertificateViewSet(viewsets.ModelViewSet):
+    queryset = Certificate.objects.all()
+    serializer_class = CertificateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        course_id = self.request.data.get('course')
+        course = get_object_or_404(Course, id=course_id)
+
+        # Generate PDF content
+        pdf_content = self.generate_pdf(course, self.request.user)
+
+        try:
+            # Save PDF content to the model instance
+            certificate = serializer.save(user=self.request.user, course=course)
+            certificate.pdf_file.save('certificate.pdf', ContentFile(pdf_content), save=True)
+            return certificate
+        except Exception as e:
+            # Handle any errors that occur during saving
+            raise Exception('Error saving certificate PDF file') from e
+
+    def generate_pdf(self, course, user):
+        buffer = BytesIO()
+        pdf = canvas.Canvas(buffer)
+        pdf.setTitle(f"Certificate of Completion - {course.title}")
+        pdf.drawString(100, 750, f"Certificate of Completion")
+        pdf.drawString(100, 730, f"Course: {course.title}")
+        pdf.drawString(100, 710, f"Recipient: {user.username}")
+        pdf.save()
+
+        pdf_bytes = buffer.getvalue()
+        buffer.close()
+
+        return pdf_bytes
+
+    @action(detail=False, methods=['GET'])
+    def user_course_certificates(self, request):
+        user = self.request.user
+        course_id = request.query_params.get('course_id')
+
+        # Check if course_id is provided
+        if not course_id:
+            return Response({'error': 'Course ID parameter is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            certificates = Certificate.objects.filter(user=user, course_id=course_id)
+            serializer = self.get_serializer(certificates, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': 'Failed to fetch certificates.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

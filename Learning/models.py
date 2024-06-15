@@ -120,3 +120,16 @@ class SubsectionCompletion(models.Model):
 
     def __str__(self):
         return f'{self.user.username} completed {self.subsection.name}'
+
+
+class Certificate(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    issue_date = models.DateTimeField(auto_now_add=True)
+    pdf_file = models.FileField(upload_to='certificates/', blank=True, null=True)
+
+    class Meta:
+        unique_together = ('course', 'user')
+
+    def __str__(self):
+        return f"Certificate of {self.course} for {self.user.username}"
