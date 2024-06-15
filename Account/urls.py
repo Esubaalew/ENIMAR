@@ -3,7 +3,7 @@ from rest_framework import routers
 from .views import UserSignInView, TeacherSignUp, StudentSignUp, UserViewSet, StudentViewSet, TeacherViewSet, \
     GetUserByUsername, UserPostListView, logged_in_user, TeacherCourseListView, CoursesEnrolledByUserView, \
     AccountantViewSet, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationViewSet, \
-    UserNotificationListView
+    UserNotificationListView, FollowViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
@@ -12,6 +12,7 @@ router.register(r'teachers', TeacherViewSet, basename='teachers')
 router.register(r'accountants', AccountantViewSet, basename='accountants')
 router.register(r'address', UserViewSet, basename='address')
 router.register(r'notifications', NotificationViewSet, basename='notifications')
+router.register(r'follows', FollowViewSet, basename='follows')
 
 urlpatterns = [
 

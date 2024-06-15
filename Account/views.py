@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from Learning.serializers import CourseSerializer
 from django.shortcuts import get_object_or_404
 from payments.models import Payment
-from .models import CustomUser, Teacher, Student, Address
+from .models import CustomUser, Teacher, Student, Address, Follow
 from Learning.models import Course
 from Social.models import Post
 from rest_framework import generics, permissions, status, viewsets
@@ -26,7 +26,6 @@ from Social.serializers import PostSerializer
 from rest_framework import generics
 from .models import Notification
 from .serializers import NotificationSerializer
-from rest_framework.permissions import IsAuthenticated
 
 
 class MyTokenGenerator(PasswordResetTokenGenerator):
@@ -179,6 +178,20 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = FollowSerializer(following, many=True)
         return Response(serializer.data)
 
+    @action(detail=True, methods=['post'])
+    def follow(self, request, pk=None):
+        followed_user = self.get_object()
+        follower_user = request.user
+
+        if followed_user == follower_user:
+            return Response({'detail': 'You cannot follow yourself.'}, status=status.HTTP_400_BAD_REQUEST)
+        if Follow.objects.filter(follower=follower_user, followed=followed_user).exists():
+            return Response({'detail': 'You are already following this user.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        follow_instance = Follow.objects.create(follower=follower_user, followed=followed_user)
+        serializer = FollowSerializer(follow_instance)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     @action(detail=True, methods=['get'])
     def posts(self, request, pk=None):
         user = self.get_object()
@@ -280,6 +293,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
     serializer_class = NotificationSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class UserNotificationListView(generics.ListAPIView):
     serializer_class = NotificationSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -287,3 +301,12 @@ class UserNotificationListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['user_id']
         return Notification.objects.filter(user_id=user_id)
+
+
+class FollowViewSet(viewsets.ModelViewSet):
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(follower=self.request.user)

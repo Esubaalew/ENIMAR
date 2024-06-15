@@ -1,17 +1,8 @@
-from django.contrib.auth.decorators import login_required
-from django.db.models import Q, Max
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+
 from django.utils.text import slugify
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
-from Account.models import CustomUser
-from Account.serializers import UserSerializer
-from .forms import PostCreationForm, CommentForm
 from .models import Post, Comment, Photo, Video, Message, Share, Like
-from django.shortcuts import get_object_or_404, redirect
-from django.shortcuts import redirect, reverse
 from rest_framework import generics, permissions, status, viewsets
 from .serializers import PostSerializer, CommentSerializer, MessageSerializer, ShareSerializer, PhotoSerializer, \
     VideoSerializer, LikeSerializer
@@ -53,7 +44,6 @@ class PostViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -61,6 +51,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
 
 class LikeViewSet(viewsets.ModelViewSet):
     queryset = Like.objects.all()

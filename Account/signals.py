@@ -22,7 +22,7 @@ def create_follow_notification(sender, instance, created, **kwargs):
         Notification.objects.create(
             user=instance.followed,
             notification_type='follow',
-            text=f'{instance.follower.username} followed you.'
+            text=f'{instance.follower.username} started following you.'
         )
 
 
