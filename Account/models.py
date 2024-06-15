@@ -66,11 +66,6 @@ class Follow(models.Model):
         return f'{self.follower} follows {self.followed}'
 
 
-# models.py
-from django.db import models
-from django.contrib.auth.models import User
-
-
 class Notification(models.Model):
     NOTIFICATION_TYPES = (
         ('like', 'Like'),

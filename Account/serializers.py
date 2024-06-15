@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from .models import CustomUser, Student, Teacher, Follow, Address
+from .models import Notification
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -109,10 +110,7 @@ class AddressSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-from .models import Notification
-
-
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
-        fields = ['id', 'notification_type', 'text', 'created_at']
+        fields = '__all__'
