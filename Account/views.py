@@ -20,7 +20,7 @@ from django.contrib.auth import authenticate
 from .serializers import UserSerializer, UserSignInSerializer, StudentSerializer, TeacherSerializer, \
     StudentViewSerializer, TeacherViewSerializer, FollowSerializer, AccountantSerializer, \
     PasswordResetRequestSerializer, PasswordResetConfirmSerializer, AddressSerializer
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view, action, permission_classes
 from Social.serializers import PostSerializer
 from rest_framework import generics
@@ -279,3 +279,11 @@ class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class UserNotificationListView(generics.ListAPIView):
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        return Notification.objects.filter(user_id=user_id)

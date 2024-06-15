@@ -2,7 +2,8 @@ from django.urls import path, include
 from rest_framework import routers
 from .views import UserSignInView, TeacherSignUp, StudentSignUp, UserViewSet, StudentViewSet, TeacherViewSet, \
     GetUserByUsername, UserPostListView, logged_in_user, TeacherCourseListView, CoursesEnrolledByUserView, \
-    AccountantViewSet, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationViewSet
+    AccountantViewSet, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationViewSet, \
+    UserNotificationListView
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
@@ -25,5 +26,6 @@ urlpatterns = [
     path('password-reset/', PasswordResetRequestAPIView.as_view(), name='password_reset_request'),
     path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmAPIView.as_view(),
          name='password_reset_confirm'),
+    path('user/<int:user_id>/notifications/', UserNotificationListView.as_view(), name='user_notifications'),
     path('', include(router.urls)),
 ]
