@@ -8,6 +8,13 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['teacher']
 
+    def validate_published(self, value):
+        if value:
+            if self.instance and not self.instance.has_content():
+                raise serializers.ValidationError(
+                    "A course must have sections and non-empty subsections to be published.")
+        return value
+
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:

@@ -11,6 +11,7 @@ class Course(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     teacher = models.ForeignKey(Teacher, on_delete=models.PROTECT, related_name='courses')
     students = models.ManyToManyField(Student, related_name='enrolled_courses', blank=True)
+    published = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -20,8 +21,8 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
-    def get_absolute_url(self):
-        return reverse('learning:course_detail', args=[str(self.pk)])
+    def has_content(self):
+        return self.sections.exists() and any(section.subsections.exists() for section in self.sections.all())
 
 
 class Quiz(models.Model):
