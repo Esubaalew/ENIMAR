@@ -3,7 +3,7 @@ from rest_framework import routers
 from .views import UserSignInView, TeacherSignUp, StudentSignUp, UserViewSet, StudentViewSet, TeacherViewSet, \
     GetUserByUsername, UserPostListView, logged_in_user, TeacherCourseListView, CoursesEnrolledByUserView, \
     AccountantViewSet, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationViewSet, \
-    UserNotificationListView, FollowViewSet
+    UserNotificationListView, FollowViewSet, UserSearchView
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
@@ -28,5 +28,6 @@ urlpatterns = [
     path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmAPIView.as_view(),
          name='password_reset_confirm'),
     path('user/<int:user_id>/notifications/', UserNotificationListView.as_view(), name='user_notifications'),
+    path('search/', UserSearchView.as_view(), name='user-search'),
     path('', include(router.urls)),
 ]

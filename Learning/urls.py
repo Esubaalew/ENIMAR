@@ -7,7 +7,7 @@ from .views import (
     ReadingViewSet, FileViewSet,
     CourseVideoViewSet,
     CoursePhotoViewSet, StudentsWhoPaidForCourseView, SubsectionCompletionViewSet,
-    UserCourseSubsectionCompletionView, CertificateViewSet
+    UserCourseSubsectionCompletionView, CertificateViewSet, CourseSearchView
 )
 
 app_name = 'learning'
@@ -30,4 +30,5 @@ urlpatterns = [
     path('course/<int:course_id>/students/', StudentsWhoPaidForCourseView.as_view(), name='students-who-enrolled'),
     path('courses/<int:course_id>/completed-subsections/', UserCourseSubsectionCompletionView.as_view(),
          name='user-course-completed-subsections'),
+    path('search/', CourseSearchView.as_view(), name='resource_search'),
 ]

@@ -88,3 +88,15 @@ class CertificateSerializer(serializers.ModelSerializer):
         model = Certificate
         fields = ['id', 'course', 'user', 'issue_date', 'pdf_file']
         read_only_fields = ['issue_date', 'pdf_file']
+
+
+class CourseSearchSerializer(serializers.Serializer):
+    query = serializers.CharField(max_length=100)
+
+    def validate_query(self, value):
+        """
+        Validate the query parameter.
+        """
+        if not value.strip():
+            raise serializers.ValidationError("Query parameter cannot be empty.")
+        return value

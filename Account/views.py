@@ -2,6 +2,7 @@ import six
 from django.conf import settings
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import EmailMultiAlternatives
+from django.db.models import Q
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.html import strip_tags
@@ -19,7 +20,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer, UserSignInSerializer, StudentSerializer, TeacherSerializer, \
     StudentViewSerializer, TeacherViewSerializer, FollowSerializer, AccountantSerializer, \
-    PasswordResetRequestSerializer, PasswordResetConfirmSerializer, AddressSerializer
+    PasswordResetRequestSerializer, PasswordResetConfirmSerializer, AddressSerializer, UserSearchSerializer, \
+    CustomUserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view, action, permission_classes
 from Social.serializers import PostSerializer
@@ -310,3 +312,22 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(follower=self.request.user)
+
+
+class UserSearchView(APIView):
+    def get(self, request):
+        serializer = UserSearchSerializer(data=request.query_params)
+        if serializer.is_valid():
+            query = serializer.validated_data['query']
+
+            users = CustomUser.objects.filter(
+                Q(username__icontains=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query))
+
+            serializer = UserSerializer(users, many=True)
+            return Response(serializer.data)
+        else:
+
+            return Response(
+                serializer.errors,
+                status=400
+            )

@@ -4,6 +4,8 @@ from reportlab.pdfgen import canvas
 from rest_framework.decorators import action
 from django.core.files.base import ContentFile
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from Account.models import Teacher, CustomUser
 from Account.serializers import UserSerializer
 from payments.models import Payment
@@ -12,7 +14,7 @@ from .models import Course, Quiz, Question, Choice, Section, Subsection, File, R
 from rest_framework import permissions, viewsets, generics, status
 from .serializers import CourseSerializer, QuizSerializer, QuestionSerializer, SectionSerializer, ChoiceSerializer, \
     FileSerializer, ReadingSerializer, SubSectionSerializer, CoursePhotoSerializer, CourseVideoSerializer, \
-    SubsectionCompletionSerializer, CertificateSerializer
+    SubsectionCompletionSerializer, CertificateSerializer, CourseSearchSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -223,3 +225,17 @@ class CertificateViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': 'Failed to fetch certificates.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class CourseSearchView(APIView):
+    def get(self, request):
+        serializer = CourseSearchSerializer(data=request.query_params)
+        if serializer.is_valid():
+            query = serializer.validated_data['query']
+
+            courses = Course.objects.filter(title__icontains=query)
+
+            serializer = CourseSerializer(courses, many=True)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
