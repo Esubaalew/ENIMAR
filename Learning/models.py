@@ -81,6 +81,23 @@ class Subsection(models.Model):
         return self.name
 
 
+class Questionn(models.Model):
+    text = models.CharField(max_length=200)
+    subsection = models.ForeignKey(Subsection, related_name='questions', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text
+
+
+class Choicee(models.Model):
+    text = models.CharField(max_length=100)
+    question = models.ForeignKey(Questionn, related_name='choices', on_delete=models.CASCADE)
+    is_correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.text
+
+
 class Reading(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()

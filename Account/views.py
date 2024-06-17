@@ -14,14 +14,13 @@ from payments.models import Payment
 from .models import CustomUser, Teacher, Student, Address, Follow
 from Learning.models import Course
 from Social.models import Post
-from rest_framework import generics, permissions, status, viewsets
+from rest_framework import permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer, UserSignInSerializer, StudentSerializer, TeacherSerializer, \
     StudentViewSerializer, TeacherViewSerializer, FollowSerializer, AccountantSerializer, \
-    PasswordResetRequestSerializer, PasswordResetConfirmSerializer, AddressSerializer, UserSearchSerializer, \
-    CustomUserSerializer
+    PasswordResetRequestSerializer, PasswordResetConfirmSerializer, AddressSerializer, UserSearchSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view, action, permission_classes
 from Social.serializers import PostSerializer

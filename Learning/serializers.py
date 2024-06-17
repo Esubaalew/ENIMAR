@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Course, Question, Quiz, Section, Choice, Subsection, File, Reading, CourseVideo, CoursePhoto, \
-    SubsectionCompletion, Certificate
+    SubsectionCompletion, Certificate, QuestionChoice, Questionn, Choicee
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -32,6 +32,12 @@ class QuizSerializer(serializers.ModelSerializer):
 class ChoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Choice
+        fields = '__all__'
+
+
+class QuestionChoiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuestionChoice
         fields = '__all__'
 
 
@@ -100,3 +106,16 @@ class CourseSearchSerializer(serializers.Serializer):
         if not value.strip():
             raise serializers.ValidationError("Query parameter cannot be empty.")
         return value
+
+
+# New code snippet
+class QuestionnSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questionn
+        fields = '__all__'
+
+
+class ChoiceeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Choicee
+        fields = '__all__'

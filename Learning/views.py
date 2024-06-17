@@ -10,11 +10,12 @@ from Account.models import Teacher, CustomUser
 from Account.serializers import UserSerializer
 from payments.models import Payment
 from .models import Course, Quiz, Question, Choice, Section, Subsection, File, Reading, CoursePhoto, CourseVideo, \
-    SubsectionCompletion, Certificate
+    SubsectionCompletion, Certificate, Choicee, Questionn
 from rest_framework import permissions, viewsets, generics, status
 from .serializers import CourseSerializer, QuizSerializer, QuestionSerializer, SectionSerializer, ChoiceSerializer, \
     FileSerializer, ReadingSerializer, SubSectionSerializer, CoursePhotoSerializer, CourseVideoSerializer, \
-    SubsectionCompletionSerializer, CertificateSerializer, CourseSearchSerializer
+    SubsectionCompletionSerializer, CertificateSerializer, CourseSearchSerializer, QuestionChoiceSerializer, \
+    QuestionnSerializer, ChoiceeSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -42,16 +43,43 @@ class QuizViewSet(viewsets.ModelViewSet):
     serializer_class = QuizSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    @action(detail=True, methods=['get'])
+    def questions(self, request, pk=None):
+        quiz = self.get_object()
+        questions = Question.objects.filter(quiz=quiz)
+        serializer = QuestionSerializer(questions, many=True)
+        return Response(serializer.data)
+
 
 class QuestionViewSet(viewsets.ModelViewSet):
-    queryset = Question.objects.all()
-    serializer_class = QuestionSerializer
+    queryset = Questionn.objects.all()
+    serializer_class = QuestionnSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    @action(detail=True, methods=['get'])
+    def choices(self, request, pk=None):
+        question = self.get_object()
+        choices = Choicee.objects.filter(question=question)
+        serializer = ChoiceeSerializer(choices, many=True)
+        return Response(serializer.data)
+
+
+class QuestionChoiceViewSet(viewsets.ModelViewSet):
+    queryset = Question.objects.all()
+    serializer_class = QuestionChoiceSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    @action(detail=True, methods=['get'])
+    def choices(self, request, pk=None):
+        question = self.get_object()
+        choices = Choice.objects.filter(question=question)
+        serializer = ChoiceSerializer(choices, many=True)
+        return Response(serializer.data)
 
 
 class ChoiceViewSet(viewsets.ModelViewSet):
-    queryset = Choice.objects.all()
-    serializer_class = ChoiceSerializer
+    queryset = Choicee.objects.all()
+    serializer_class = ChoiceeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
@@ -118,6 +146,13 @@ class SubSectionViewSet(viewsets.ModelViewSet):
         subsection = self.get_object()
         quizzes = subsection.quizzes.all()
         serializer = QuizSerializer(quizzes, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def questions(self, request, pk=None):
+        subsection = self.get_object()
+        questions = subsection.questions.all()
+        serializer = QuestionnSerializer(questions, many=True)
         return Response(serializer.data)
 
 
