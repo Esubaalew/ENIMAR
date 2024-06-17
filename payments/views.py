@@ -115,3 +115,11 @@ class PaymentCallbackView(generics.GenericAPIView):
             return Response({
                 'error': 'Payment not found'
             }, status=status.HTTP_404_NOT_FOUND)
+
+
+class PaymentsByTeacherView(generics.ListAPIView):
+    serializer_class = PaymentSerializer
+
+    def get_queryset(self):
+        teacher_id = self.kwargs['teacher_id']
+        return Payment.objects.filter(course__teacher__id=teacher_id)
